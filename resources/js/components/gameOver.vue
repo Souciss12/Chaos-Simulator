@@ -26,64 +26,44 @@ h1 {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    background: #f8f9fa;
 }
 
 .game-over-content {
     text-align: center;
-    padding: 50px 60px;
+    padding: 60px 80px;
     background: white;
-    border-radius: 20px;
-    border: 2px solid #e0e0e0;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .chaos-message {
-    font-size: 24px;
-    color: #333;
-    margin: 20px 0;
-    font-weight: 600;
+    font-size: 22px;
+    color: #2c3e50;
+    margin: 25px 0;
+    font-weight: 500;
 }
 
 .subtitle {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 30px;
-    font-style: italic;
+    font-size: 15px;
+    color: #7f8c8d;
+    margin-bottom: 35px;
 }
 
 .restart-btn {
-    padding: 15px 40px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
     color: white;
-    background: linear-gradient(135deg, #ff3300 0%, #ff6600 100%);
+    background: #ff3300;
     border: none;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 51, 0, 0.2);
+    transition: background 0.2s;
 }
 
 .restart-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 51, 0, 0.4);
-    background: linear-gradient(135deg, #ff4400 0%, #ff7700 100%);
-}
-
-.restart-btn:active {
-    transform: translateY(0);
+    background: #e62e00;
 }
 </style>
