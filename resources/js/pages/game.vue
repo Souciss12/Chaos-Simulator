@@ -8,20 +8,19 @@
             :notification="notification"
         />
     </div>
-    <div v-else class="text-center">
-        <h1>Game Over !</h1>
-        <p>Your chaos level reached {{ chaosStore.chaosLevel }}%.</p>
-        <button @click="chaosStore.restart" class="btn btn-primary">Restart</button>
+    <div v-else>
+        <GameOver :chaosLevel="chaosStore.chaosLevel" @restart="chaosStore.restart()" />
     </div>
 </template>
 
 <script setup>
+import { useChaosStore } from "../stores/chaosStore";
 import Engine from "../components/engine.vue";
 import HUD from "../components/hud.vue";
 import ChaosNotification from "../components/ChaosNotification.vue";
-import { useChaosStore } from "../stores/chaosStore";
+import GameOver from "../components/gameOver.vue";
 
 const chaosStore = useChaosStore();
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
