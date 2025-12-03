@@ -1,0 +1,53 @@
+Idée projet Laravel / VueJS
+
+Chaos Simulator
+
+Principe du jeux :
+
+	Un niveau de Chaos est affiché sur l'écran en allant de 0% à 100%
+	
+	Pendant la partie des éléments de Chaos apparaissent
+		Ils ont tous un moyen d'être désactiver par une action
+		Si on le laisse trop longtemps le niveau de Chaos augmente
+		Si on le désactive le niveau de Chaos baisse
+		
+	Plus le niveau de Chaos est haut plus les choses qui apparaissent sont 
+		forte ( tremblement / changement couleur / ... )
+	
+	Si le niveau de Chaos arrive à 100% la partie s'arrete
+	
+Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
+
+	Une popup qui apparait et qu'il faut fermer le plus vite possible
+		Variante :
+			La popup pourrait se déplacer
+			
+	Un thermomètre est sur l'écran et si il affiche une température trop haute il 
+		faut appuyer sur un ventilateur pour baisser la température
+		
+	Cuisine
+	
+	Objet qui tombe du ciel	
+
+------------------------------------------------------------
+Thermomètre Event
+
+	Si le thermomètre indique "normal" et que rien est activé
+		Au bout de 30 secondes le thermomètre devient soit "cold" ou "hot"
+	
+	Si le thermomètre indique "normal" et que le fan est activé pendant 5 secondes le thermomètre indique "cold" et +3 Chaos
+	Si le thermomètre indique "normal" et que le fireplace est activé pendant 5 secondes le thermomètre indique "hot" et +3 Chaos
+	
+	Si le thermomètre indique "cold" 
+		et que rien est activé -> toutes les 5 secondes +1 Chaos
+		et que le fan est activé -> toutes les 5 secondes +3 Chaos
+		et que le fireplace est activé -> au bout de 10 secondes le thermomètre indique "normal" et -2 Chaos
+		
+	Si le thermomètre indique "hot"
+		et que rien est activé -> toutes les 5 secondes +1 Chaos
+		et que le fireplace est activé -> toutes les 5 secondes +3 Chaos
+		et que le fan est activé -> au bout de 10 secondes le thermomètre indique "normal" et -2 Chaos
+		
+	!!!!!! A VOIR
+		Si laissé trop longtemps chaud ou froid avec ou sans fan ou fireplace
+			Ecran gel ou brûle et empeche de jouer pendant 3 secondes

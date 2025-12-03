@@ -95,6 +95,9 @@ export const useChaosStore = defineStore('chaos', () => {
 
         popups.value = [];
         nextPopupId.value = 1;
+
+        chaosNotifications.value = [];
+        nextNotificationId = 1;
     }
 
     return {
