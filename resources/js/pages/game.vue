@@ -2,6 +2,11 @@
     <div v-if="!chaosStore.isGameOver" class="game">
         <HUD />
         <Engine />
+        <ChaosNotification
+            v-for="notification in chaosStore.chaosNotifications"
+            :key="notification.id"
+            :notification="notification"
+        />
     </div>
     <div v-else class="text-center">
         <h1>Game Over !</h1>
@@ -13,6 +18,7 @@
 <script setup>
 import Engine from "../components/engine.vue";
 import HUD from "../components/hud.vue";
+import ChaosNotification from "../components/ChaosNotification.vue";
 import { useChaosStore } from "../stores/chaosStore";
 
 const chaosStore = useChaosStore();
