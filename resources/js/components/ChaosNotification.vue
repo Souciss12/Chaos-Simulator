@@ -2,7 +2,7 @@
     <div
         class="chaos-notification"
         :class="{ positive: notification.amount < 0, negative: notification.amount > 0 }"
-        :style="{ left: notification.x + 'px', top: notification.y + 'px' }"
+        :style="{ left: notification.x - 25 + 'px', top: notification.y - 40 + 'px' }"
     >
         {{ notification.amount > 0 ? "+" : "" }}{{ notification.amount }}
     </div>
@@ -17,11 +17,11 @@ defineProps({
 <style scoped>
 .chaos-notification {
     position: fixed;
-    font-size: 24px;
+    font-size: 34px;
     font-weight: bold;
     pointer-events: none;
     z-index: 10000;
-    animation: float-up 1s ease-out forwards;
+    animation: float-up 2s ease-out forwards;
 }
 
 .positive {

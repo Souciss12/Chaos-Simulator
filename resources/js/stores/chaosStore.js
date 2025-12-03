@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useChaosStore = defineStore('chaos', () => {
-    const chaosLevel = ref(50);
+    const chaosLevel = ref(25);
     const isGameOver = ref(false);
 
     const popups = ref([]);
@@ -90,7 +90,7 @@ export const useChaosStore = defineStore('chaos', () => {
     }
 
     function restart() {
-        chaosLevel.value = 0;
+        chaosLevel.value = 25;
         isGameOver.value = false;
 
         popups.value = [];

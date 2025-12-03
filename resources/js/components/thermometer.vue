@@ -84,12 +84,12 @@ function updateChaosTimer() {
     if (thermometerState.value === "normal" && isFanOn.value) {
         chaosTimer = setInterval(() => {
             thermometerState.value = "cold";
-            chaosStore.addChaos(3, 180, 300);
+            chaosStore.addChaos(3, 190, 300);
         }, 5000); // 5 secondes
     } else if (thermometerState.value === "normal" && isFireplaceOn.value) {
         chaosTimer = setInterval(() => {
             thermometerState.value = "hot";
-            chaosStore.addChaos(3, 180, 300);
+            chaosStore.addChaos(3, 190, 300);
         }, 5000); // 5 secondes
     }
 
@@ -112,14 +112,14 @@ function updateChaosTimer() {
     if (thermometerState.value === "cold" && isFireplaceOn.value) {
         chaosTimer = setInterval(() => {
             thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 180, 300);
+            chaosStore.reduceChaos(2, 190, 300);
         }, 15000); // 15 secondes
     }
 
     if (thermometerState.value === "hot" && isFanOn.value) {
         chaosTimer = setInterval(() => {
             thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 180, 300);
+            chaosStore.reduceChaos(2, 190, 300);
         }, 15000); // 15 secondes
     }
 }
@@ -127,11 +127,11 @@ function updateChaosTimer() {
 function startChaosTimer(isAdd, amount, interval) {
     if (isAdd) {
         chaosTimer = setInterval(() => {
-            chaosStore.addChaos(amount, 180, 300);
+            chaosStore.addChaos(amount, 190, 300);
         }, interval);
     } else {
         chaosTimer = setInterval(() => {
-            chaosStore.reduceChaos(amount, 180, 300);
+            chaosStore.reduceChaos(amount, 190, 300);
         }, interval);
     }
 }
