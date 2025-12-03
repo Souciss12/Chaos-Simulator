@@ -41,12 +41,12 @@ Thermomètre Event
 	Si le thermomètre indique "cold" 
 		et que rien est activé -> toutes les 5 secondes +1 Chaos
 		et que le fan est activé -> toutes les 5 secondes +3 Chaos
-		et que le fireplace est activé -> au bout de 10 secondes le thermomètre indique "normal" et -2 Chaos
+		et que le fireplace est activé -> au bout de 15 secondes le thermomètre indique "normal" et -2 Chaos
 		
 	Si le thermomètre indique "hot"
 		et que rien est activé -> toutes les 5 secondes +1 Chaos
 		et que le fireplace est activé -> toutes les 5 secondes +3 Chaos
-		et que le fan est activé -> au bout de 10 secondes le thermomètre indique "normal" et -2 Chaos
+		et que le fan est activé -> au bout de 15 secondes le thermomètre indique "normal" et -2 Chaos
 		
 	!!!!!! A VOIR
 		Si laissé trop longtemps chaud ou froid avec ou sans fan ou fireplace

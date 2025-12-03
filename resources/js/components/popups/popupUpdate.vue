@@ -36,12 +36,12 @@ const chaosStore = useChaosStore();
 const props = defineProps(["popup"]);
 
 function openUpdate(event) {
-    chaosStore.addChaos(4, event.clientX, event.clientY);
+    chaosStore.addChaos(5, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id);
 }
 
 function closeUpdate(event) {
-    chaosStore.reduceChaos(2, event.clientX, event.clientY);
+    chaosStore.reduceChaos(1, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
 }
 </script>

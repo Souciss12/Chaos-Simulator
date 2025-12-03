@@ -15,7 +15,7 @@ const chaosStore = useChaosStore();
 spawnPopup();
 
 function spawnPopup() {
-    const delay = Math.floor(Math.random() * (30000 - 5000 + 1)) + 5000;
+    const delay = Math.floor(Math.random() * (60000 - 10000 + 1)) + 10000;
     setTimeout(() => {
         chaosStore.spawnPopup();
         spawnPopup();

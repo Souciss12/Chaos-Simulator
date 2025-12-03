@@ -113,14 +113,14 @@ function updateChaosTimer() {
         chaosTimer = setInterval(() => {
             thermometerState.value = "normal";
             chaosStore.reduceChaos(2, 180, 300);
-        }, 10000); // 10 secondes
+        }, 15000); // 15 secondes
     }
 
     if (thermometerState.value === "hot" && isFanOn.value) {
         chaosTimer = setInterval(() => {
             thermometerState.value = "normal";
             chaosStore.reduceChaos(2, 180, 300);
-        }, 10000); // 10 secondes
+        }, 15000); // 15 secondes
     }
 }
 

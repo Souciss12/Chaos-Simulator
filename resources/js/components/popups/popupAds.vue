@@ -3,7 +3,7 @@
     <div class="popup-ad" :style="{ left: popup.x + '%', top: popup.y + '%' }">
         <span class="close-btn rounded p-2" @click="closeAds($event)">X</span>
 
-        <img :src="`https://picsum.photos/800/400?random=${popup.id}`" alt="ads" />
+        <img :src="`https://picsum.photos/800/400?random=${popup.id}`" />
 
         <div class="popup-content">
             <h2>Offre spéciale !</h2>
@@ -28,12 +28,12 @@ const chaosStore = useChaosStore();
 const props = defineProps(["popup"]);
 
 function openAds(event) {
-    chaosStore.addChaos(4, event.clientX, event.clientY);
+    chaosStore.addChaos(5, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id);
 }
 
 function closeAds(event) {
-    chaosStore.reduceChaos(2, event.clientX, event.clientY);
+    chaosStore.reduceChaos(1, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
 }
 </script>
