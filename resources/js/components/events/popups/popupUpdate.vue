@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { useChaosStore } from "../../stores/chaosStore";
+import { useChaosStore } from "../../../stores/chaosStore";
 
 const chaosStore = useChaosStore();
 

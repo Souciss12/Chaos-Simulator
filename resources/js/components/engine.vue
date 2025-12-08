@@ -1,25 +1,30 @@
 <template>
     <div>
         <Thermometer />
-        <Popup v-for="popup in chaosStore.popups" :key="popup.id" :popup="popup" />
+        <!-- <Popup v-for="popup in chaosStore.popups" :key="popup.id" :popup="popup" /> -->
+        <Calendar />
     </div>
 </template>
 
 <script setup>
 import { useChaosStore } from "../stores/chaosStore";
-import Popup from "./popup.vue";
-import Thermometer from "./thermometer.vue";
+import Popup from "./events/popup.vue";
+import Thermometer from "./events/thermometer.vue";
+import Calendar from "./events/calendar.vue";
 
 const chaosStore = useChaosStore();
 
 spawnPopup();
 
 function spawnPopup() {
-    const delay = Math.floor(Math.random() * (60000 - 10000 + 1)) + 10000;
     setTimeout(() => {
         chaosStore.spawnPopup();
         spawnPopup();
-    }, delay);
+    }, rndDelay());
+}
+
+function rndDelay() {
+    return Math.floor(Math.random() * (90000 - 20000 + 1)) + 20000;
 }
 </script>
 

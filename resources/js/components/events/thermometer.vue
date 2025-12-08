@@ -9,12 +9,12 @@
                     : coldThermometerImg
             "
         />
-        <!-- <button @click="changeThermometerState()">Change</button> -->
+        <button @click="changeThermometerState()">Change</button>
     </div>
     <div class="fan">
         <img
             @click="activateFan()"
-            src="../../assets/fan.png"
+            src="../../../assets/fan.png"
             :class="{ rotate: isFanOn }"
         />
     </div>
@@ -28,12 +28,12 @@
 
 <script setup>
 import { ref, watch, onUnmounted } from "vue";
-import fireplaceOnImg from "../../assets/on-fireplace.png";
-import fireplaceOffImg from "../../assets/off-fireplace.png";
-import normalThermometerImg from "../../assets/normal-thermometer.png";
-import hotThermometerImg from "../../assets/hot-thermometer.png";
-import coldThermometerImg from "../../assets/cold-thermometer.png";
-import { useChaosStore } from "../stores/chaosStore";
+import fireplaceOnImg from "../../../assets/on-fireplace.png";
+import fireplaceOffImg from "../../../assets/off-fireplace.png";
+import normalThermometerImg from "../../../assets/normal-thermometer.png";
+import hotThermometerImg from "../../../assets/hot-thermometer.png";
+import coldThermometerImg from "../../../assets/cold-thermometer.png";
+import { useChaosStore } from "../../stores/chaosStore";
 
 const chaosStore = useChaosStore();
 const isFanOn = ref(false);
@@ -171,6 +171,12 @@ onUnmounted(() => {
     position: absolute;
     top: 250px;
     right: 60px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.fan:hover {
+    transform: scale(1.05);
 }
 
 @keyframes rotate {
@@ -195,6 +201,12 @@ onUnmounted(() => {
     position: absolute;
     top: 550px;
     right: 45px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.fireplace:hover {
+    transform: scale(1.05);
 }
 
 .fireplace img {

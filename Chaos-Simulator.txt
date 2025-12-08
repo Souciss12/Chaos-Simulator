@@ -18,16 +18,35 @@ Principe du jeux :
 	
 Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 
-	Une popup qui apparait et qu'il faut fermer le plus vite possible
-		Variante :
-			La popup pourrait se déplacer
+[!x]Une popup qui apparait et qu'il faut fermer le plus vite possible
+		Implémentation correcte de l'augmentation du Chaos à compléter
 			
-	Un thermomètre est sur l'écran et si il affiche une température trop haute il 
-		faut appuyer sur un ventilateur pour baisser la température
+[x]	Un thermomètre est sur l'écran et si il affiche une température trop haute il 
+		faut appuyer sur un ventilateur pour baisser la température et s'il fait froid faut activer un feux
 		
-	Cuisine
+[ ]	Cuisine
 	
-	Objet qui tombe du ciel	
+[ ]	Objet qui tombe du ciel	en boucle et il faut le remettre en haut à chaque fois
+		nid oiseau dans un arbre et faut remettre les oiseau qui tombent dedans
+	
+[ ]	Cible qui apparait et laisse 3 secondes pour appuyer dessus
+		
+[ ]	Nourire un animal
+	
+[x]	En fonction de la date envoyer un message à quelqu'un pour son anniversaire
+		En regardant sur un calendrier c'est l'anniversaire de qui à quelle date.
+		
+[ ]	Suite event calendar : le téléphone perd de la batterie et il faut le recharger sinon on ne peux plus l'utiliser
+		
+------------------------------------------------------------
+Anniversaire Event
+
+	Un calendrier est disponible sur l'écran, quand on appui dessus on voit la date actuelle 
+	ainsi que si c'est l'anniversaire de quelqu'un.
+	
+	Si c'est l'anniversaire de quelqu'un il faut ouvrir un téléphone en appuyant dessus et envoyer un message à la bonne personne
+		Si le jour passe sans que l'anniversaire ait été souhaité le Chaos monte
+		Si l'anniversaire à été correctement souhaité le Chaos baisse
 
 ------------------------------------------------------------
 Thermomètre Event
