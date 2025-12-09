@@ -10,12 +10,13 @@ export const useChaosStore = defineStore('chaos', () => {
 
     const calendarEvents = ref([["01", "none"], ["02", "Lucas"], ["03", "none"], ["05", "Émilie"], ["10", "none"], ["16", "none"], ["17", "Gabriel"], ["19", "Sophia"], ["22", "Clara"], ["24", "none"], ["25", "none"], ["30", "Nathan"]]);
     const currentDay = ref(Math.floor(Math.random() * 11));
+    const phoneBattery = ref(20);
 
     const chaosNotifications = ref([]);
     let nextNotificationId = 1;
 
     function spawnPopup() {
-        if (popups.value.length < 5) {
+        if (popups.value.length < 3) {
             const rnd = Math.random();
             if (rnd < 0.33) {
                 popups.value.push({
@@ -114,6 +115,7 @@ export const useChaosStore = defineStore('chaos', () => {
 
         calendarEvents,
         currentDay,
+        phoneBattery,
 
         spawnPopup,
         closePopup,

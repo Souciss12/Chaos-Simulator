@@ -1,16 +1,15 @@
 <template>
-    <div v-if="isMenuOpen" class="smartphone-screen-overlay" @click.self="closeMenu">
+    <div v-if="isMenuOpen" class="smartphone-screen-overlay">
         <div class="smartphone-screen">
             <div class="phone-header">
                 <div class="status-bar">
                     <span class="time">11:24</span>
                     <div class="status-icons">
                         <span class="signal">📶</span>
-                        <span class="battery">🔋</span>
+                        <span class="battery">🔋{{ chaosStore.phoneBattery }} %</span>
                     </div>
                 </div>
                 <div class="app-bar">
-                    <button @click="closeMenu" class="back-button">←</button>
                     <h2 class="app-title">Contacts</h2>
                     <div class="menu-dots">⋮</div>
                 </div>
@@ -36,12 +35,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+const props = defineProps(["isChargerActivate"]);
+
+import { ref, computed, onUnmounted, watch } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 
 const chaosStore = useChaosStore();
 const isMenuOpen = ref(false);
 const isMessageSent = ref(false);
+let isSmartPhoneMenuOpen = ref(false);
+let chargerTimer = null;
 
 const contacts = computed(() => {
     return chaosStore.calendarEvents
@@ -67,16 +70,48 @@ const contacts = computed(() => {
         .sort((a, b) => a.name.localeCompare(b.name));
 });
 
+let batteryTimer = null;
+
 function openMenu() {
-    isMenuOpen.value = !isMenuOpen.value;
+    stopTimer();
+    if (chaosStore.phoneBattery > 0 && !props.isChargerActivate) {
+        isMenuOpen.value = !isMenuOpen.value;
+        if (isMenuOpen.value) {
+            isSmartPhoneMenuOpen.value = true;
+            batteryTimer = setInterval(() => {
+                if (chaosStore.phoneBattery > 0) {
+                    chaosStore.phoneBattery -= 1;
+                    if (chaosStore.phoneBattery <= 0) {
+                        openMenu();
+                    }
+                }
+            }, 300); // 1% every 0.3 second
+        } else {
+            isSmartPhoneMenuOpen.value = false;
+        }
+    } else {
+        isMenuOpen.value = false;
+        isSmartPhoneMenuOpen.value = false;
+    }
 }
 
 function closeMenu() {
     isMenuOpen.value = false;
+    isSmartPhoneMenuOpen.value = false;
+    stopTimer();
+}
+
+function stopTimer() {
+    if (batteryTimer) {
+        clearInterval(batteryTimer);
+        batteryTimer = null;
+    }
 }
 
 const selectContact = (contact) => {
     isMenuOpen.value = false;
+    isSmartPhoneMenuOpen.value = false;
+    stopTimer();
     if (contact.isBirthday && !isMessageSent.value) {
         isMessageSent.value = true;
         chaosStore.reduceChaos(3, 400, 150);
@@ -88,7 +123,33 @@ const selectContact = (contact) => {
 defineExpose({
     openMenu,
     isMessageSent,
+    isMenuOpen,
 });
+
+onUnmounted(() => {
+    if (batteryTimer) {
+        clearInterval(batteryTimer);
+    }
+});
+
+watch(
+    () => props.isChargerActivate,
+    (newVal) => {
+        if (newVal) {
+            closeMenu();
+            chargerTimer = setInterval(() => {
+                if (chaosStore.phoneBattery < 100) {
+                    chaosStore.phoneBattery += 1;
+                }
+            }, 500); // 1% every 0.5 second
+        } else {
+            if (chargerTimer) {
+                clearInterval(chargerTimer);
+                chargerTimer = null;
+            }
+        }
+    }
+);
 </script>
 
 <style scoped>
