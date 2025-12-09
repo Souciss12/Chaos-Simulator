@@ -1,7 +1,7 @@
 <template>
     <div>
         <Thermometer />
-        <!-- <Popup v-for="popup in chaosStore.popups" :key="popup.id" :popup="popup" /> -->
+        <Popup v-for="popup in chaosStore.popups" :key="popup.id" :popup="popup" />
         <Calendar />
     </div>
 </template>
