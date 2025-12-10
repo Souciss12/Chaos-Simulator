@@ -3,6 +3,7 @@
         <Thermometer />
         <Popup v-for="popup in chaosStore.popups" :key="popup.id" :popup="popup" />
         <Calendar />
+        <Pizza />
     </div>
 </template>
 
@@ -11,6 +12,7 @@ import { useChaosStore } from "../stores/chaosStore";
 import Popup from "./events/popup.vue";
 import Thermometer from "./events/thermometer.vue";
 import Calendar from "./events/calendar.vue";
+import Pizza from "./events/pizza.vue";
 
 const chaosStore = useChaosStore();
 

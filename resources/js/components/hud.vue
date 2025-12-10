@@ -1,11 +1,11 @@
 <template>
     <div class="text-center mt-3">
         <h1>Chaos level : {{ chaosStore.chaosLevel }}%</h1>
-        debug :
+        <!-- debug :
         <button class="me-2" @click="chaosStore.addChaos(5)">Ajouter Chaos (+5%)</button>
         <button class="ms-2" @click="chaosStore.reduceChaos(5)">
             Retirer Chaos (-5%)
-        </button>
+        </button> -->
     </div>
 </template>
 

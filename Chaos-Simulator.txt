@@ -25,6 +25,27 @@ Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 		faut appuyer sur un ventilateur pour baisser la température et s'il fait froid faut activer un feux
 		
 [ ]	Cuisine
+
+	Peperonni
+		pâte
+		sauce tomate
+		fromage
+		peperonni
+	Margherita
+		pâte
+		sauce tomate
+		fromage
+	Hawai
+		pâte
+		sauce tomate
+		fromage
+		ananas
+	Jambono
+		pâte
+		sauce tomate
+		fromage
+		jambon
+	
 	
 [ ]	Objet qui tombe du ciel	en boucle et il faut le remettre en haut à chaque fois
 		nid oiseau dans un arbre et faut remettre les oiseau qui tombent dedans
@@ -32,11 +53,13 @@ Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 [ ]	Cible qui apparait et laisse 3 secondes pour appuyer dessus
 		
 [ ]	Nourire un animal
+
+[ ] barre qui bouge. pas toucher le bord
 	
 [x]	En fonction de la date envoyer un message à quelqu'un pour son anniversaire
 		En regardant sur un calendrier c'est l'anniversaire de qui à quelle date.
 		
-[ ]	Suite event calendar : le téléphone perd de la batterie et il faut le recharger sinon on ne peux plus l'utiliser
+[x]	Suite event calendar : le téléphone perd de la batterie et il faut le recharger sinon on ne peux plus l'utiliser
 		
 ------------------------------------------------------------
 Anniversaire Event
