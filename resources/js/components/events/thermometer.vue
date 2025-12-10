@@ -9,7 +9,7 @@
                     : coldThermometerImg
             "
         />
-        <button @click="changeThermometerState()">Change</button>
+        <!-- <button @click="changeThermometerState()">Change</button> -->
     </div>
     <div class="fan">
         <img

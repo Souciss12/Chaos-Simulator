@@ -5,7 +5,7 @@
     <div :class="{ openCalendar: isCalendarOpen, hideCalendar: !isCalendarOpen }">
         <img class="calendarImg" :src="currentCalendarImage" />
     </div>
-    <button @click="changeCurrentDay()" class="ms-3">Change</button>
+    <!-- <button @click="changeCurrentDay()" class="ms-3">Change</button> -->
     <div class="smartphone" @click="openSmartphone()">
         <img :src="smartphoneMenuRef?.isMenuOpen ? onSmartphoneImg : offSmartphoneImg" />
     </div>
@@ -100,6 +100,7 @@ function changeCurrentDay() {
     top: 200px;
     left: 300px;
     border: 2px solid #000;
+    z-index: 10;
 }
 
 .hideCalendar {
