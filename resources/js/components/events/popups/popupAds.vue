@@ -27,12 +27,17 @@ const chaosStore = useChaosStore();
 
 const props = defineProps(["popup"]);
 
+const timer = setInterval(() => {
+    chaosStore.addChaos(1, 1250, 90);
+}, 8000);
+
 function openAds(event) {
     chaosStore.addChaos(5, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id);
 }
 
 function closeAds(event) {
+    clearInterval(timer);
     chaosStore.reduceChaos(1, event.clientX, event.clientY);
     chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
 }
