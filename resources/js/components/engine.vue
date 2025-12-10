@@ -26,6 +26,8 @@ function spawnPopup() {
 }
 
 function rndDelay() {
+    // return Math.floor(Math.random() * 5000) + 3000;
+    // return 10;
     return Math.floor(Math.random() * (90000 - 20000 + 1)) + 20000;
 }
 </script>
