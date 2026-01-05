@@ -1,5 +1,4 @@
 <template>
-    <!-- <button @click="spawnCustomer()">Spawn</button> -->
     <div class="customer" :class="{ hide: isHiden }">
         <div class="person">
             <img @click="givePizza()" src="../../../assets/pizza/person.png" />
@@ -27,10 +26,9 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-
-const props = defineProps(["cookedPizzaType", "isPizzaCooked"]);
-const emit = defineEmits(["pizzaGiven"]);
+import { ref, watch, onMounted, onUnmounted } from "vue";
+import { eventBus } from "../../eventBus";
+import { seedRandom } from "../../utils/seedRandom";
 
 import fromageImg from "../../../assets/pizza/fromage.png";
 import ananasImg from "../../../assets/pizza/ananas.png";
@@ -42,24 +40,40 @@ const chaosStore = useChaosStore();
 
 const isHiden = ref(true);
 const pizzaType = ref("emtpy");
+const cookedPizzaType = ref("empty");
+const isPizzaCooked = ref(false);
 let customerTimer = null;
 
 setTimeout(() => {
     spawnCustomer();
-}, 5000);
+}, seedRandom.randomInt(5000, 10000));
+
+const handlePizzaStateChange = (data) => {
+    cookedPizzaType.value = data.cookedPizzaType;
+    isPizzaCooked.value = data.isPizzaCooked;
+};
+
+onMounted(() => {
+    eventBus.on("pizza-state-changed", handlePizzaStateChange);
+});
+
+onUnmounted(() => {
+    eventBus.off("pizza-state-changed", handlePizzaStateChange);
+    if (customerTimer) clearInterval(customerTimer);
+});
 
 function givePizza() {
-    if (!isHiden.value && props.isPizzaCooked) {
-        if (pizzaType.value === props.cookedPizzaType) {
+    if (!isHiden.value && isPizzaCooked.value) {
+        if (pizzaType.value === cookedPizzaType.value) {
             isHiden.value = true;
             chaosStore.reduceChaos(3, 800, 500);
-            emit("pizzaGiven");
+            eventBus.emit("pizza-given");
         }
     }
 }
 function spawnCustomer() {
     isHiden.value = false;
-    const rnd = Math.floor(Math.random() * 4) + 1;
+    const rnd = seedRandom.randomInt(1, 4);
 
     if (rnd === 1) {
         pizzaType.value = "fromage";
@@ -77,7 +91,7 @@ watch(
     (newVal) => {
         if (newVal) {
             if (customerTimer) clearInterval(customerTimer);
-            const rnd = Math.floor(Math.random() * 20000) + 10000;
+            const rnd = seedRandom.randomInt(10000, 30000);
             setTimeout(() => {
                 spawnCustomer();
             }, rnd);

@@ -9,65 +9,36 @@
                     : coldThermometerImg
             "
         />
-        <!-- <button @click="changeThermometerState()">Change</button> -->
-    </div>
-    <div class="fan">
-        <img
-            @click="activateFan()"
-            src="../../../assets/fan.png"
-            :class="{ rotate: isFanOn }"
-        />
-    </div>
-    <div class="fireplace">
-        <img
-            @click="activateFireplace()"
-            :src="isFireplaceOn ? fireplaceOnImg : fireplaceOffImg"
-        />
     </div>
 </template>
 
 <script setup>
 import { ref, watch, onUnmounted } from "vue";
-import fireplaceOnImg from "../../../assets/on-fireplace.png";
-import fireplaceOffImg from "../../../assets/off-fireplace.png";
 import normalThermometerImg from "../../../assets/normal-thermometer.png";
 import hotThermometerImg from "../../../assets/hot-thermometer.png";
 import coldThermometerImg from "../../../assets/cold-thermometer.png";
 import { useChaosStore } from "../../stores/chaosStore";
-
+import { eventBus } from "../../eventBus";
+import { seedRandom } from "../../utils/seedRandom";
 const chaosStore = useChaosStore();
-const isFanOn = ref(false);
-const isFireplaceOn = ref(false);
 
 const thermometerState = ref("normal");
-
+const temperatureMode = ref("stable"); // stable, cooling, heating
 let chaosTimer = null;
 
+eventBus.on("temperature-cooling", () => {
+    temperatureMode.value = "cooling";
+});
+
+eventBus.on("temperature-heating", () => {
+    temperatureMode.value = "heating";
+});
+
+eventBus.on("temperature-stabilizing", () => {
+    temperatureMode.value = "stable";
+});
+
 updateChaosTimer();
-
-function changeThermometerState() {
-    if (thermometerState.value == "normal") {
-        thermometerState.value = "hot";
-    } else if (thermometerState.value == "hot") {
-        thermometerState.value = "cold";
-    } else {
-        thermometerState.value = "normal";
-    }
-}
-
-function activateFan() {
-    if (isFanOn.value == false) {
-        isFireplaceOn.value = false;
-    }
-    isFanOn.value = !isFanOn.value;
-}
-
-function activateFireplace() {
-    if (isFireplaceOn.value == false) {
-        isFanOn.value = false;
-    }
-    isFireplaceOn.value = !isFireplaceOn.value;
-}
 
 function updateChaosTimer() {
     if (chaosTimer) {
@@ -75,62 +46,57 @@ function updateChaosTimer() {
         chaosTimer = null;
     }
 
-    if (thermometerState.value === "normal" && !isFanOn.value && !isFireplaceOn.value) {
+    if (thermometerState.value === "normal" && temperatureMode.value === "stable") {
         chaosTimer = setTimeout(() => {
-            thermometerState.value = Math.random() < 0.5 ? "cold" : "hot";
-        }, 30000); // 30 secondes
+            thermometerState.value = seedRandom.random < 0.5 ? "cold" : "hot";
+        }, seedRandom.randomInt(15000, 35000));
     }
 
-    if (thermometerState.value === "normal" && isFanOn.value) {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "cold";
-            chaosStore.addChaos(3, 190, 300);
-        }, 5000); // 5 secondes
-    } else if (thermometerState.value === "normal" && isFireplaceOn.value) {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "hot";
-            chaosStore.addChaos(3, 190, 300);
-        }, 5000); // 5 secondes
+    if (thermometerState.value === "normal" && temperatureMode.value === "cooling") {
+        startChaosTimer(true, 3, 5000, "cold");
+    }
+
+    if (thermometerState.value === "normal" && temperatureMode.value === "heating") {
+        startChaosTimer(true, 3, 5000, "hot");
     }
 
     if (
         (thermometerState.value === "cold" || thermometerState.value === "hot") &&
-        !isFanOn.value &&
-        !isFireplaceOn.value
+        temperatureMode.value === "stable"
     ) {
-        startChaosTimer(true, 1, 5000); // 5 secondes
+        startChaosTimer(true, 1, 5000);
     }
 
-    if (thermometerState.value === "cold" && isFanOn.value) {
-        startChaosTimer(true, 3, 5000); // 5 secondes
+    if (thermometerState.value === "cold" && temperatureMode.value === "cooling") {
+        startChaosTimer(true, 3, 5000);
     }
 
-    if (thermometerState.value === "hot" && isFireplaceOn.value) {
-        startChaosTimer(true, 3, 5000); // 5 secondes
+    if (thermometerState.value === "hot" && temperatureMode.value === "heating") {
+        startChaosTimer(true, 3, 5000);
     }
 
-    if (thermometerState.value === "cold" && isFireplaceOn.value) {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 190, 300);
-        }, 15000); // 15 secondes
+    if (thermometerState.value === "cold" && temperatureMode.value === "heating") {
+        startChaosTimer(false, 2, 15000, "normal");
     }
 
-    if (thermometerState.value === "hot" && isFanOn.value) {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 190, 300);
-        }, 15000); // 15 secondes
+    if (thermometerState.value === "hot" && temperatureMode.value === "cooling") {
+        startChaosTimer(false, 2, 15000, "normal");
     }
 }
 
-function startChaosTimer(isAdd, amount, interval) {
+function startChaosTimer(isAdd, amount, interval, state) {
     if (isAdd) {
         chaosTimer = setInterval(() => {
+            if (state) {
+                thermometerState.value = state;
+            }
             chaosStore.addChaos(amount, 190, 300);
         }, interval);
     } else {
         chaosTimer = setInterval(() => {
+            if (state) {
+                thermometerState.value = state;
+            }
             chaosStore.reduceChaos(amount, 190, 300);
         }, interval);
     }
@@ -140,11 +106,7 @@ watch(thermometerState, () => {
     updateChaosTimer();
 });
 
-watch(isFanOn, () => {
-    updateChaosTimer();
-});
-
-watch(isFireplaceOn, () => {
+watch(temperatureMode, () => {
     updateChaosTimer();
 });
 
@@ -164,53 +126,6 @@ onUnmounted(() => {
 
 .thermometer img {
     width: 100px;
-    height: auto;
-}
-
-.fan {
-    position: absolute;
-    top: 250px;
-    right: 60px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.fan:hover {
-    transform: scale(1.05);
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.rotate {
-    animation: rotate 1s linear infinite;
-}
-
-.fan img {
-    width: 220px;
-    height: auto;
-}
-
-.fireplace {
-    position: absolute;
-    top: 550px;
-    right: 45px;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.fireplace:hover {
-    transform: scale(1.05);
-}
-
-.fireplace img {
-    width: 250px;
     height: auto;
 }
 </style>

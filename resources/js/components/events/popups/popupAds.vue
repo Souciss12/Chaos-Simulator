@@ -1,7 +1,6 @@
 <template>
-    <!-- <div class="overlay" id="popup"> -->
     <div class="popup-ad" :style="{ left: popup.x + '%', top: popup.y + '%' }">
-        <span class="close-btn rounded p-2" @click="closeAds($event)">X</span>
+        <span class="close-btn rounded p-2" @click="closePopup($event)">X</span>
 
         <img :src="`https://picsum.photos/800/400?random=${popup.id}`" />
 
@@ -12,34 +11,23 @@
                 soir uniquement.
             </p>
 
-            <button @click="openAds($event)" class="cta-btn">
+            <button @click="openPopup($event)" class="open-btn">
                 Voir l'offre maintenant
             </button>
         </div>
     </div>
-    <!-- </div> -->
 </template>
 
 <script setup>
-import { useChaosStore } from "../../../stores/chaosStore";
-
-const chaosStore = useChaosStore();
-
 const props = defineProps(["popup"]);
+const emit = defineEmits(["close-popup", "open-popup"]);
 
-const timer = setInterval(() => {
-    chaosStore.addChaos(1, 1250, 90);
-}, 8000);
-
-function openAds(event) {
-    chaosStore.addChaos(5, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id);
+function openPopup(event) {
+    emit("open-popup", props.popup.id, event.clientX, event.clientY);
 }
 
-function closeAds(event) {
-    clearInterval(timer);
-    chaosStore.reduceChaos(1, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
+function closePopup(event) {
+    emit("close-popup", props.popup.id, event.clientX, event.clientY);
 }
 </script>
 
@@ -87,7 +75,7 @@ function closeAds(event) {
     font-size: 15px;
 }
 
-.cta-btn {
+.open-btn {
     background: #ff6600;
     padding: 12px 20px;
     color: white;
@@ -98,7 +86,7 @@ function closeAds(event) {
     width: 80%;
 }
 
-.cta-btn:hover {
+.open-btn:hover {
     background: #e05500;
 }
 </style>

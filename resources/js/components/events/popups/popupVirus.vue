@@ -16,8 +16,8 @@
         </div>
 
         <div class="buttons">
-            <button @click="openVirus($event)" class="safe">Remove viruses now</button>
-            <button @click="closeVirus($event)" class="danger">
+            <button @click="openPopup($event)" class="safe">Remove viruses now</button>
+            <button @click="closePopup($event)" class="danger">
                 I don't want to be safe
             </button>
         </div>
@@ -25,25 +25,15 @@
 </template>
 
 <script setup>
-import { useChaosStore } from "../../../stores/chaosStore";
-
-const chaosStore = useChaosStore();
-
 const props = defineProps(["popup"]);
+const emit = defineEmits(["close-popup", "open-popup"]);
 
-const timer = setInterval(() => {
-    chaosStore.addChaos(1, 1250, 90);
-}, 8000);
-
-function openVirus(event) {
-    chaosStore.addChaos(5, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id);
+function openPopup(event) {
+    emit("open-popup", props.popup.id, event.clientX, event.clientY);
 }
 
-function closeVirus(event) {
-    clearInterval(timer);
-    chaosStore.reduceChaos(1, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
+function closePopup(event) {
+    emit("close-popup", props.popup.id, event.clientX, event.clientY);
 }
 </script>
 

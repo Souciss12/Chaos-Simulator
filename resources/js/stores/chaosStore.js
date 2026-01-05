@@ -1,46 +1,47 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { seedRandom } from '../utils/seedRandom';
 
 export const useChaosStore = defineStore('chaos', () => {
-    const chaosLevel = ref(25);
+    const chaosLevel = ref(null);
     const isGameOver = ref(false);
 
     const popups = ref([]);
     const nextPopupId = ref(1);
 
-    const calendarEvents = ref([["01", "none"], ["02", "Lucas"], ["03", "none"], ["05", "Émilie"], ["10", "none"], ["16", "none"], ["17", "Gabriel"], ["19", "Sophia"], ["22", "Clara"], ["24", "none"], ["25", "none"], ["30", "Nathan"]]);
-    const currentDay = ref(Math.floor(Math.random() * 11));
-    const phoneBattery = ref(20);
+    const calendarEvents = ref(null);
+    const currentDay = ref(null);
+    const phoneBattery = ref(null);
 
     const chaosNotifications = ref([]);
     let nextNotificationId = 1;
 
     function spawnPopup() {
         if (popups.value.length < 3) {
-            const rnd = Math.random();
+            const rnd = seedRandom.random();
             if (rnd < 0.33) {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'virus',
                     time: 3000,
-                    x: Math.random() * 80,
-                    y: Math.random() * 60,
+                    x: seedRandom.randomFloat(0, 80),
+                    y: seedRandom.randomFloat(0, 60),
                 });
             } else if (rnd <= 0.66) {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'ads',
                     time: 3000,
-                    x: Math.random() * 70,
-                    y: Math.random() * 65,
+                    x: seedRandom.randomFloat(0, 70),
+                    y: seedRandom.randomFloat(0, 65),
                 });
             } else {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'update',
                     time: 3000,
-                    x: Math.random() * 75,
-                    y: Math.random() * 65,
+                    x: seedRandom.randomFloat(0, 75),
+                    y: seedRandom.randomFloat(0, 65),
                 });
             }
         }

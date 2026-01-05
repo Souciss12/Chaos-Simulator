@@ -18,13 +18,12 @@ Principe du jeux :
 	
 Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 
-[!x]Une popup qui apparait et qu'il faut fermer le plus vite possible
-		Implémentation correcte de l'augmentation du Chaos à compléter
+[x] Une popup qui apparait et qu'il faut fermer le plus vite possible
 			
 [x]	Un thermomètre est sur l'écran et si il affiche une température trop haute il 
 		faut appuyer sur un ventilateur pour baisser la température et s'il fait froid faut activer un feux
 		
-[ ]	Cuisine
+[x]	Cuisine
 
 	Peperonni
 		pâte
@@ -46,6 +45,7 @@ Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 		fromage
 		jambon
 	
+[ ] Implémenter des seed dans les random : dépendance npm install seedrandom
 	
 [ ]	Objet qui tombe du ciel	en boucle et il faut le remettre en haut à chaque fois
 		nid oiseau dans un arbre et faut remettre les oiseau qui tombent dedans
