@@ -18,6 +18,8 @@ const chaosStore = useChaosStore();
 const isMenuOpen = ref(false);
 const isChargerActivate = ref(false);
 
+chaosStore.phoneBattery = 20;
+
 eventBus.on("smartphone-menu-opened", () => {
     isMenuOpen.value = true;
 });

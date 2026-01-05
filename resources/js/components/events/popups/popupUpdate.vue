@@ -2,7 +2,7 @@
     <div class="update-popup" :style="{ left: popup.x + '%', top: popup.y + '%' }">
         <div class="title-bar">
             Windows Update
-            <span class="close" @click="closeUpdate($event)">x</span>
+            <span class="close" @click="closePopup($event)">x</span>
         </div>
 
         <div class="content">
@@ -19,8 +19,8 @@
             </div>
 
             <div class="btns">
-                <button class="btn" @click="closeUpdate($event)">Plus tard</button>
-                <button class="btn primary" @click="openUpdate($event)">
+                <button class="btn" @click="closePopup($event)">Plus tard</button>
+                <button class="btn primary" @click="openPopup($event)">
                     Installer maintenant
                 </button>
             </div>
@@ -29,25 +29,15 @@
 </template>
 
 <script setup>
-import { useChaosStore } from "../../../stores/chaosStore";
-
-const chaosStore = useChaosStore();
-
 const props = defineProps(["popup"]);
+const emit = defineEmits(["close-popup", "open-popup"]);
 
-const timer = setInterval(() => {
-    chaosStore.addChaos(1, 1250, 90);
-}, 8000);
-
-function openUpdate(event) {
-    chaosStore.addChaos(5, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id);
+function openPopup(event) {
+    emit("open-popup", props.popup.id, event.clientX, event.clientY);
 }
 
-function closeUpdate(event) {
-    clearInterval(timer);
-    chaosStore.reduceChaos(1, event.clientX, event.clientY);
-    chaosStore.closePopup(props.popup.id, event.clientX, event.clientY);
+function closePopup(event) {
+    emit("close-popup", props.popup.id, event.clientX, event.clientY);
 }
 </script>
 

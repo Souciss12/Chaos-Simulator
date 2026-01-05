@@ -1,9 +1,4 @@
 <template>
-    <Customer
-        :cooked-pizza-type="cookedPizzaType"
-        :is-pizza-cooked="isPizzaCooked"
-        @pizza-given="resetMicrowave"
-    />
     <div class="table">
         <img src="../../../assets/pizza/table.png" />
         <div class="poubelle">
@@ -80,8 +75,8 @@
 
 <script setup>
 import { useChaosStore } from "../../stores/chaosStore";
-import { ref } from "vue";
-import Customer from "./customer.vue";
+import { ref, watch } from "vue";
+import { eventBus } from "../../eventBus";
 import pateImg from "../../../assets/pizza/pate.png";
 import tomateImg from "../../../assets/pizza/tomate.png";
 import fromageImg from "../../../assets/pizza/fromage.png";
@@ -187,6 +182,17 @@ function resetMicrowave() {
     isPizzaCooked.value = false;
     cookedPizzaType.value = "empty";
 }
+
+eventBus.on("pizza-given", () => {
+    resetMicrowave();
+});
+
+watch([cookedPizzaType, isPizzaCooked], ([newPizzaType, newIsCoooked]) => {
+    eventBus.emit("pizza-state-changed", {
+        cookedPizzaType: newPizzaType,
+        isPizzaCooked: newIsCoooked,
+    });
+});
 </script>
 
 <style scoped>

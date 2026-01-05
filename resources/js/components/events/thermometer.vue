@@ -19,6 +19,7 @@ import hotThermometerImg from "../../../assets/hot-thermometer.png";
 import coldThermometerImg from "../../../assets/cold-thermometer.png";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
+import { seedRandom } from "../../utils/seedRandom";
 const chaosStore = useChaosStore();
 
 const thermometerState = ref("normal");
@@ -47,22 +48,16 @@ function updateChaosTimer() {
 
     if (thermometerState.value === "normal" && temperatureMode.value === "stable") {
         chaosTimer = setTimeout(() => {
-            thermometerState.value = Math.random() < 0.5 ? "cold" : "hot";
-        }, 30000);
+            thermometerState.value = seedRandom.random < 0.5 ? "cold" : "hot";
+        }, seedRandom.randomInt(15000, 35000));
     }
 
     if (thermometerState.value === "normal" && temperatureMode.value === "cooling") {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "cold";
-            chaosStore.addChaos(3, 190, 300);
-        }, 5000);
+        startChaosTimer(true, 3, 5000, "cold");
     }
 
     if (thermometerState.value === "normal" && temperatureMode.value === "heating") {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "hot";
-            chaosStore.addChaos(3, 190, 300);
-        }, 5000);
+        startChaosTimer(true, 3, 5000, "hot");
     }
 
     if (
@@ -81,27 +76,27 @@ function updateChaosTimer() {
     }
 
     if (thermometerState.value === "cold" && temperatureMode.value === "heating") {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 190, 300);
-        }, 15000);
+        startChaosTimer(false, 2, 15000, "normal");
     }
 
     if (thermometerState.value === "hot" && temperatureMode.value === "cooling") {
-        chaosTimer = setInterval(() => {
-            thermometerState.value = "normal";
-            chaosStore.reduceChaos(2, 190, 300);
-        }, 15000);
+        startChaosTimer(false, 2, 15000, "normal");
     }
 }
 
-function startChaosTimer(isAdd, amount, interval) {
+function startChaosTimer(isAdd, amount, interval, state) {
     if (isAdd) {
         chaosTimer = setInterval(() => {
+            if (state) {
+                thermometerState.value = state;
+            }
             chaosStore.addChaos(amount, 190, 300);
         }, interval);
     } else {
         chaosTimer = setInterval(() => {
+            if (state) {
+                thermometerState.value = state;
+            }
             chaosStore.reduceChaos(amount, 190, 300);
         }, interval);
     }

@@ -5,17 +5,34 @@
     <div :class="{ openCalendar: isCalendarOpen, hideCalendar: !isCalendarOpen }">
         <img class="calendarImg" :src="currentCalendarImage" />
     </div>
-    <button @click="changeCurrentDay()" class="ms-3">Change</button>
+    <!-- <button @click="changeCurrentDay()" class="ms-3">Change</button> -->
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
+import { seedRandom } from "../../utils/seedRandom";
 
 const chaosStore = useChaosStore();
 let isCalendarOpen = ref(false);
 const isMessageSent = ref(false);
+
+chaosStore.calendarEvents = [
+    ["01", "none"],
+    ["02", "Lucas"],
+    ["03", "none"],
+    ["05", "Émilie"],
+    ["10", "none"],
+    ["16", "none"],
+    ["17", "Gabriel"],
+    ["19", "Sophia"],
+    ["22", "Clara"],
+    ["24", "none"],
+    ["25", "none"],
+    ["30", "Nathan"],
+];
+chaosStore.currentDay = seedRandom.randomInt(0, 10);
 
 const currentCalendarImage = computed(() => {
     return new URL(
@@ -35,7 +52,7 @@ setInterval(() => {
         chaosStore.addChaos(5, 200, 150);
     }
     changeCurrentDay();
-}, 61000);
+}, seedRandom.randomInt(30000, 60000));
 
 function openCalendar() {
     isCalendarOpen.value = !isCalendarOpen.value;
