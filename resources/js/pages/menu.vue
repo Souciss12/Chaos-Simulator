@@ -15,7 +15,10 @@
 <script setup>
 import { useNavigationStore } from "../stores/navigationStore";
 import { useChaosStore } from "../stores/chaosStore";
-import { seedRandom } from "../utils/seedRandom";
+import { popupsRandom } from "../utils/seedRandom";
+import { thermoRandom } from "../utils/seedRandom";
+import { calendarRandom } from "../utils/seedRandom";
+import { customerRandom } from "../utils/seedRandom";
 
 const navigationStore = useNavigationStore();
 const chaosStore = useChaosStore();
@@ -24,7 +27,10 @@ function startDailyGame() {
     const today = new Date();
     const seed =
         today.getFullYear() * 1000 + today.getMonth() * 100 + today.getDate() * 10;
-    seedRandom.setSeed(seed);
+    popupsRandom.setSeed(seed + "popup");
+    thermoRandom.setSeed(seed + "thermo");
+    calendarRandom.setSeed(seed + "calendar");
+    customerRandom.setSeed(seed + "customer");
 
     chaosStore.restart();
     navigationStore.navigateTo("game");
@@ -32,7 +38,10 @@ function startDailyGame() {
 
 function startRandomGame() {
     const randomSeed = Math.random().toString(36).substring(2, 15);
-    seedRandom.setSeed(randomSeed);
+    popupsRandom.setSeed(randomSeed + "popup");
+    thermoRandom.setSeed(randomSeed + "thermo");
+    calendarRandom.setSeed(randomSeed + "calendar");
+    customerRandom.setSeed(randomSeed + "customer");
 
     chaosStore.restart();
     navigationStore.navigateTo("game");

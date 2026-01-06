@@ -28,7 +28,7 @@ import Smartphone from "./events/smartphone.vue";
 import SmartphoneMenu from "./events/smartphoneMenu.vue";
 import Charger from "./events/charger.vue";
 import Customer from "./events/customer.vue";
-import { seedRandom } from "../utils/seedRandom";
+import { popupsRandom } from "../utils/seedRandom";
 
 const chaosStore = useChaosStore();
 
@@ -45,7 +45,7 @@ function spawnPopup() {
 
 function rndDelay() {
     // return 5000;
-    return seedRandom.randomInt(20000, 90000);
+    return popupsRandom.randomInt(20000, 90000);
 }
 </script>
 

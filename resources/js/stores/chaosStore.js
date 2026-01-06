@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { seedRandom } from '../utils/seedRandom';
+import { popupsRandom } from '../utils/seedRandom';
 
 export const useChaosStore = defineStore('chaos', () => {
     const chaosLevel = ref(null);
@@ -19,30 +19,30 @@ export const useChaosStore = defineStore('chaos', () => {
 
     function spawnPopup() {
         if (popups.value.length < 3) {
-            const rnd = seedRandom.random();
+            const rnd = popupsRandom.random();
             if (rnd < 0.33) {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'virus',
                     time: 3000,
-                    x: seedRandom.randomFloat(0, 80),
-                    y: seedRandom.randomFloat(0, 60),
+                    x: popupsRandom.randomFloat(0, 80),
+                    y: popupsRandom.randomFloat(0, 60),
                 });
             } else if (rnd <= 0.66) {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'ads',
                     time: 3000,
-                    x: seedRandom.randomFloat(0, 70),
-                    y: seedRandom.randomFloat(0, 65),
+                    x: popupsRandom.randomFloat(0, 70),
+                    y: popupsRandom.randomFloat(0, 65),
                 });
             } else {
                 popups.value.push({
                     id: nextPopupId.value++,
                     type: 'update',
                     time: 3000,
-                    x: seedRandom.randomFloat(0, 75),
-                    y: seedRandom.randomFloat(0, 65),
+                    x: popupsRandom.randomFloat(0, 75),
+                    y: popupsRandom.randomFloat(0, 65),
                 });
             }
         }

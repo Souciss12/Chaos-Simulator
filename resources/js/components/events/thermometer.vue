@@ -19,7 +19,7 @@ import hotThermometerImg from "../../../assets/hot-thermometer.png";
 import coldThermometerImg from "../../../assets/cold-thermometer.png";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
-import { seedRandom } from "../../utils/seedRandom";
+import { thermoRandom } from "../../utils/seedRandom";
 const chaosStore = useChaosStore();
 
 const thermometerState = ref("normal");
@@ -48,8 +48,8 @@ function updateChaosTimer() {
 
     if (thermometerState.value === "normal" && temperatureMode.value === "stable") {
         chaosTimer = setTimeout(() => {
-            thermometerState.value = seedRandom.randomInt(0, 2) <= 1 ? "cold" : "hot";
-        }, seedRandom.randomInt(15000, 35000));
+            thermometerState.value = thermoRandom.randomInt(0, 2) <= 1 ? "cold" : "hot";
+        }, thermoRandom.randomInt(15000, 35000));
     }
 
     if (thermometerState.value === "normal" && temperatureMode.value === "cooling") {

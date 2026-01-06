@@ -23,4 +23,8 @@ class SeedRandom {
     }
 }
 
-export const seedRandom = new SeedRandom();
+// export const seedRandom = new SeedRandom();
+export const popupsRandom = new SeedRandom();
+export const thermoRandom = new SeedRandom();
+export const calendarRandom = new SeedRandom();
+export const customerRandom = new SeedRandom();

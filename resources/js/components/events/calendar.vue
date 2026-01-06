@@ -12,7 +12,7 @@
 import { ref, computed } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
-import { seedRandom } from "../../utils/seedRandom";
+import { calendarRandom } from "../../utils/seedRandom";
 
 const chaosStore = useChaosStore();
 let isCalendarOpen = ref(false);
@@ -32,7 +32,7 @@ chaosStore.calendarEvents = [
     ["25", "none"],
     ["30", "Nathan"],
 ];
-chaosStore.currentDay = seedRandom.randomInt(0, 10);
+chaosStore.currentDay = calendarRandom.randomInt(0, 10);
 
 const currentCalendarImage = computed(() => {
     return new URL(
@@ -52,7 +52,7 @@ setInterval(() => {
         chaosStore.addChaos(5, 200, 150);
     }
     changeCurrentDay();
-}, seedRandom.randomInt(30000, 60000));
+}, calendarRandom.randomInt(30000, 60000));
 
 function openCalendar() {
     isCalendarOpen.value = !isCalendarOpen.value;

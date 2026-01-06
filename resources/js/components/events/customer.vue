@@ -28,7 +28,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import { eventBus } from "../../eventBus";
-import { seedRandom } from "../../utils/seedRandom";
+import { customerRandom } from "../../utils/seedRandom";
 
 import fromageImg from "../../../assets/pizza/fromage.png";
 import ananasImg from "../../../assets/pizza/ananas.png";
@@ -46,7 +46,7 @@ let customerTimer = null;
 
 setTimeout(() => {
     spawnCustomer();
-}, seedRandom.randomInt(5000, 10000));
+}, customerRandom.randomInt(5000, 10000));
 
 const handlePizzaStateChange = (data) => {
     cookedPizzaType.value = data.cookedPizzaType;
@@ -73,7 +73,7 @@ function givePizza() {
 }
 function spawnCustomer() {
     isHiden.value = false;
-    const rnd = seedRandom.randomInt(1, 4);
+    const rnd = customerRandom.randomInt(1, 4);
 
     if (rnd === 1) {
         pizzaType.value = "fromage";
@@ -91,7 +91,7 @@ watch(
     (newVal) => {
         if (newVal) {
             if (customerTimer) clearInterval(customerTimer);
-            const rnd = seedRandom.randomInt(10000, 30000);
+            const rnd = customerRandom.randomInt(10000, 30000);
             setTimeout(() => {
                 spawnCustomer();
             }, rnd);
