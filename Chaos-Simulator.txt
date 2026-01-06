@@ -45,7 +45,7 @@ Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 		fromage
 		jambon
 	
-[ ] Implémenter des seed dans les random : dépendance npm install seedrandom
+[x] Implémenter des seed dans les random : dépendance npm install seedrandom
 	
 [ ]	Objet qui tombe du ciel	en boucle et il faut le remettre en haut à chaque fois
 		nid oiseau dans un arbre et faut remettre les oiseau qui tombent dedans
@@ -53,8 +53,6 @@ Elements de Chaos ( A compléter une fois l'idée plus concrétisé ) :
 [ ]	Cible qui apparait et laisse 3 secondes pour appuyer dessus
 		
 [ ]	Nourire un animal
-
-[ ] barre qui bouge. pas toucher le bord
 	
 [x]	En fonction de la date envoyer un message à quelqu'un pour son anniversaire
 		En regardant sur un calendrier c'est l'anniversaire de qui à quelle date.

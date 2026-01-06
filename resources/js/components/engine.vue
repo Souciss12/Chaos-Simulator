@@ -32,14 +32,7 @@ import { seedRandom } from "../utils/seedRandom";
 
 const chaosStore = useChaosStore();
 
-chaosStore.chaosLevel = 30;
-
-setSeed();
-
-function setSeed() {
-    // seedRandom.setSeed(Math.random().toString(36).substring(2, 15));
-    seedRandom.setSeed("quentin");
-}
+chaosStore.chaosLevel = 50;
 
 spawnPopup();
 

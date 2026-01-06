@@ -1,9 +1,9 @@
 <template>
-    <div class="game-over">
-        <div class="game-over-content">
-            <h1>Game Over !</h1>
+    <div class="win">
+        <div class="win-content">
+            <h1>Victoire !</h1>
             <p class="chaos-value">Final Chaos : {{ chaosLevel }}%</p>
-            <p class="message">The simulation went out of control !</p>
+            <p class="message">You managed to handle everything</p>
             <div class="buttons">
                 <button @click="goToMenu" class="btn-menu">Menu</button>
             </div>
@@ -20,7 +20,7 @@ function goToMenu() {
 </script>
 
 <style scoped>
-.game-over {
+.win {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,17 +28,17 @@ function goToMenu() {
     background: #f5f5f5;
 }
 
-.game-over-content {
+.win-content {
     text-align: center;
     padding: 50px 70px;
     background: white;
-    border: 3px solid #e74c3c;
+    border: 3px solid #2ecc71;
 }
 
 h1 {
     font-size: 72px;
     font-weight: 900;
-    color: #e74c3c;
+    color: #2ecc71;
     margin: 0 0 30px 0;
     letter-spacing: 8px;
 }
@@ -74,12 +74,12 @@ h1 {
 }
 
 .btn-restart {
-    color: #e74c3c;
-    border-color: #e74c3c;
+    color: #2ecc71;
+    border-color: #2ecc71;
 }
 
 .btn-restart:hover {
-    background: #e74c3c;
+    background: #2ecc71;
     color: white;
 }
 

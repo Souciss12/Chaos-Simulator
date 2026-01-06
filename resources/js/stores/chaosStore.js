@@ -5,6 +5,7 @@ import { seedRandom } from '../utils/seedRandom';
 export const useChaosStore = defineStore('chaos', () => {
     const chaosLevel = ref(null);
     const isGameOver = ref(false);
+    const isGameWin = ref(false);
 
     const popups = ref([]);
     const nextPopupId = ref(1);
@@ -73,6 +74,7 @@ export const useChaosStore = defineStore('chaos', () => {
         if (mouseX !== undefined && mouseY !== undefined) {
             addChaosNotification(-amount, mouseX, mouseY);
         }
+        checkWin();
     }
 
     function addChaosNotification(amount, x, y) {
@@ -96,9 +98,16 @@ export const useChaosStore = defineStore('chaos', () => {
         }
     }
 
+    function checkWin() {
+        if (chaosLevel.value <= 0) {
+            isGameWin.value = true;
+        }
+    }
+
     function restart() {
         chaosLevel.value = 25;
         isGameOver.value = false;
+        isGameWin.value = false;
 
         popups.value = [];
         nextPopupId.value = 1;
@@ -110,6 +119,7 @@ export const useChaosStore = defineStore('chaos', () => {
     return {
         chaosLevel,
         isGameOver,
+        isGameWin,
 
         popups,
         chaosNotifications,
