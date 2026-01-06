@@ -7,6 +7,7 @@
                 <button @click="startRandomGame" class="btn-random">
                     Partie aléatoire
                 </button>
+                <button @click="startDactylo" class="btn-random">Random Dactylo</button>
             </div>
         </div>
     </div>
@@ -45,6 +46,10 @@ function startRandomGame() {
 
     chaosStore.restart();
     navigationStore.navigateTo("game");
+}
+
+function startDactylo() {
+    navigationStore.navigateTo("dactylo");
 }
 </script>
 

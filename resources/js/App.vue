@@ -7,6 +7,7 @@ import { computed } from "vue";
 import { useNavigationStore } from "./stores/navigationStore";
 import Menu from "./pages/menu.vue";
 import Game from "./pages/game.vue";
+import Dactylo from "./pages/dactylo.vue";
 
 const navigationStore = useNavigationStore();
 
@@ -16,6 +17,8 @@ const currentComponent = computed(() => {
             return Menu;
         case "game":
             return Game;
+        case "dactylo":
+            return Dactylo;
         default:
             return Menu;
     }
