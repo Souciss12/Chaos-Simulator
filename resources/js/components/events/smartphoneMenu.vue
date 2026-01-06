@@ -61,7 +61,7 @@ eventBus.on("charger-activated", () => {
         if (chaosStore.phoneBattery < 100) {
             chaosStore.phoneBattery += 1;
         }
-    }, 500);
+    }, 1000);
 });
 
 eventBus.on("charger-deactivated", () => {

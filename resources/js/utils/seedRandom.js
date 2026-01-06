@@ -10,10 +10,6 @@ class SeedRandom {
         this.rng = seedrandom(seed);
     }
 
-    generateRandomSeed() {
-        return Math.random().toString(36).substring(2, 15);
-    }
-
     random() {
         return this.rng();
     }
@@ -24,14 +20,6 @@ class SeedRandom {
 
     randomFloat(min, max) {
         return this.random() * (max - min) + min;
-    }
-
-    getCurrentSeed() {
-        return this.currentSeed;
-    }
-
-    reset() {
-        this.rng = seedrandom(this.currentSeed);
     }
 }
 

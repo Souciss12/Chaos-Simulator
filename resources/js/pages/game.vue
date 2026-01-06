@@ -39,8 +39,8 @@ function menu() {
 <style scoped>
 .menuBtn {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 40px;
+    right: 60px;
     z-index: 1000;
 }
 
