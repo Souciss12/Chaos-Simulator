@@ -17,8 +17,8 @@
     <div v-else>
         <GameOver :chaosLevel="chaosStore.chaosLevel" @restart="chaosStore.restart()" />
     </div>
-    <button @click="chaosStore.addChaos(100)">Loose</button>
-    <button @click="chaosStore.reduceChaos(100)">Win</button>
+    <!-- <button @click="chaosStore.addChaos(100)">Loose</button>
+    <button @click="chaosStore.reduceChaos(100)">Win</button> -->
 </template>
 
 <script setup>

@@ -49,7 +49,7 @@ function updateChaosTimer() {
     if (thermometerState.value === "normal" && temperatureMode.value === "stable") {
         chaosTimer = setTimeout(() => {
             thermometerState.value = seedRandom.randomInt(0, 2) <= 1 ? "cold" : "hot";
-        }, seedRandom.randomInt(1500, 3500));
+        }, seedRandom.randomInt(15000, 35000));
     }
 
     if (thermometerState.value === "normal" && temperatureMode.value === "cooling") {
