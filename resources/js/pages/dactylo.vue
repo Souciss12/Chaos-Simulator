@@ -1,73 +1,111 @@
 <template>
-    <div class="stats">
-        <div class="total-strokes">Total strokes : {{ dactyloStore.totalStrokes }}</div>
-        <div class="current-streak">
-            Current streak : {{ dactyloStore.currentStreak }}
-        </div>
-        <div class="errors">Errors : {{ dactyloStore.errors.length }}</div>
-        <div class="passed-times">Time : {{ dactyloStore.passedTime }}s</div>
-        <div class="accuracy">Accuracy : {{ dactyloStore.accuracy.toFixed(1) }}%</div>
-        <div class="speed">Speed : {{ Math.round(dactyloStore.typeSpeed) }} cpm</div>
-    </div>
-    <br />
-    <div class="parameters">
-        <label for="language-select">Language: </label>
-        <select id="language-select" v-model="dactyloStore.language">
-            <option v-for="lang in dactyloStore.languages" :key="lang" :value="lang">
-                {{ lang.toUpperCase() }}
-            </option>
-        </select>
+    <div class="page">
+        <div class="container">
+            <header class="header">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Speed</span>
+                        <span class="stat-value"
+                            >{{ Math.round(dactyloStore.typeSpeed) }} CPM</span
+                        >
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span class="stat-value"
+                            >{{ dactyloStore.accuracy.toFixed(1) }}%</span
+                        >
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time</span>
+                        <span class="stat-value"
+                            >{{ dactyloStore.passedTime.toFixed(1) }}s</span
+                        >
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value">{{ dactyloStore.currentStreak }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Errors</span>
+                        <span class="stat-value">{{ dactyloStore.errors.length }}</span>
+                    </div>
+                </div>
+            </header>
 
-        <label for="number-of-words">Words: </label>
-        <input
-            id="number-of-words"
-            type="number"
-            v-model.number="dactyloStore.numberOfWords"
-            min="5"
-            max="40"
-        />
-
-        <label for="category-select">Category: </label>
-        <select id="category-select" v-model="dactyloStore.category">
-            <template v-if="dactyloStore.language == 'en'">
-                <option
-                    v-for="cat in dactyloStore.EnglishCategories"
-                    :key="cat"
-                    :value="cat"
+            <div class="controls">
+                <div class="control-group">
+                    <label>Language</label>
+                    <select v-model="dactyloStore.language">
+                        <option
+                            v-for="lang in dactyloStore.languages"
+                            :key="lang"
+                            :value="lang"
+                        >
+                            {{ lang.toUpperCase() }}
+                        </option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Words</label>
+                    <input
+                        type="number"
+                        v-model.number="dactyloStore.numberOfWords"
+                        min="5"
+                        max="80"
+                    />
+                </div>
+                <div class="control-group">
+                    <label>Category</label>
+                    <select v-model="dactyloStore.category">
+                        <template v-if="dactyloStore.language == 'en'">
+                            <option
+                                v-for="cat in dactyloStore.EnglishCategories"
+                                :key="cat"
+                                :value="cat"
+                            >
+                                {{ cat }}
+                            </option>
+                        </template>
+                        <template v-else>
+                            <option
+                                v-for="cat in dactyloStore.categories"
+                                :key="cat"
+                                :value="cat"
+                            >
+                                {{ cat }}
+                            </option>
+                        </template>
+                    </select>
+                </div>
+                <button
+                    class="apply-btn"
+                    @click="
+                        (event) => {
+                            dactyloStore.saveParameters();
+                            event.target.blur();
+                        }
+                    "
                 >
-                    {{ cat }}
-                </option>
-            </template>
-            <template v-else>
-                <option v-for="cat in dactyloStore.categories" :key="cat" :value="cat">
-                    {{ cat }}
-                </option>
-            </template>
-        </select>
+                    Apply Settings
+                </button>
+            </div>
 
-        <button
-            @click="
-                (event) => {
-                    dactyloStore.saveParameters();
-                    event.target.blur();
-                }
-            "
-        >
-            Save
-        </button>
-    </div>
-    <div class="textToType">
-        <span
-            v-for="(char, index) in dactyloStore.textToType"
-            :key="index"
-            :class="{
-                typed: index < dactyloStore.currentTextIndex,
-                current: index === dactyloStore.currentTextIndex,
-                error: dactyloStore.errors.includes(index),
-            }"
-        >
-            {{ char }}
-        </span>
+            <div class="text-area">
+                <div class="textToType">
+                    <span
+                        v-for="(char, index) in dactyloStore.textToType"
+                        :key="index"
+                        :class="{
+                            typed: index < dactyloStore.currentTextIndex,
+                            current: index === dactyloStore.currentTextIndex,
+                            error: dactyloStore.errors.includes(index),
+                        }"
+                    >
+                        {{ char }}
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -104,34 +142,219 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.page {
+    min-height: 100vh;
+    background: #1a1d29;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Header */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.stat-item {
+    background: #252a37;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    border: 1px solid #2f3441;
+    transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+    border-color: #4a5568;
+    transform: translateY(-2px);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #8b92a8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    color: #e1e4e8;
+    font-weight: 600;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    padding: 1.25rem;
+    background: #252a37;
+    border-radius: 8px;
+    border: 1px solid #2f3441;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 120px;
+}
+
+.control-group label {
+    font-size: 0.75rem;
+    color: #8b92a8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}
+
+.control-group select,
+.control-group input {
+    padding: 0.625rem 0.875rem;
+    background: #1a1d29;
+    border: 1px solid #2f3441;
+    border-radius: 6px;
+    color: #e1e4e8;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.control-group select:hover,
+.control-group input:hover {
+    border-color: #4a5568;
+}
+
+.control-group select:focus,
+.control-group input:focus {
+    border-color: #5b8bd4;
+    box-shadow: 0 0 0 3px rgba(91, 139, 212, 0.1);
+}
+
+.apply-btn {
+    padding: 0.625rem 1.75rem;
+    background: #5b8bd4;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.apply-btn:hover {
+    background: #4a7ac2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(91, 139, 212, 0.3);
+}
+
+.apply-btn:active {
+    transform: translateY(0);
+}
+
+/* Text Area */
+.text-area {
+    background: #252a37;
+    padding: 3rem;
+    border-radius: 12px;
+    border: 1px solid #2f3441;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .textToType {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1200px;
-    max-width: 90vw;
-    font-size: 40px;
-    line-height: 1.5;
-    font-family: "Courier New", monospace;
+    font-size: 2rem;
+    line-height: 1.8;
+    font-family: "Courier New", "Consolas", monospace;
     white-space: pre-wrap;
     word-wrap: break-word;
+    letter-spacing: 0.02em;
+}
+
+.textToType span {
+    color: #6e798b;
+    transition: all 0.15s ease;
+    position: relative;
 }
 
 .typed {
-    color: #4caf50;
+    color: #8b92a8 !important;
 }
 
 .typed.error {
-    color: #f44336;
+    color: #e06c75 !important;
+    text-decoration: line-through;
 }
 
 .current {
-    text-decoration: underline;
-    color: #666;
+    color: #e1e4e8 !important;
+    background: #5b8bd4;
+    border-radius: 3px;
+    animation: blink 1s ease-in-out infinite;
 }
 
-span {
-    color: #666;
+/* @keyframes blink {
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+    25%,
+    75% {
+        opacity: 0.5;
+    }
+} */
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    .textToType {
+        font-size: 1.5rem;
+    }
+
+    .text-area {
+        padding: 2rem 1.5rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
 }
 </style>
