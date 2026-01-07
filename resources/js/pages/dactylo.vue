@@ -17,56 +17,80 @@
             </option>
         </select>
 
-        <label for="number-of-words">Words: </label>
-        <input
-            id="number-of-words"
-            type="number"
-            v-model.number="dactyloStore.numberOfWords"
-            min="5"
-            max="40"
-        />
-
-        <label for="category-select">Category: </label>
-        <select id="category-select" v-model="dactyloStore.category">
-            <template v-if="dactyloStore.language == 'en'">
-                <option
-                    v-for="cat in dactyloStore.EnglishCategories"
-                    :key="cat"
-                    :value="cat"
+            <div class="controls">
+                <div class="control-group">
+                    <label>Language</label>
+                    <select v-model="dactyloStore.language">
+                        <option
+                            v-for="lang in dactyloStore.languages"
+                            :key="lang"
+                            :value="lang"
+                        >
+                            {{ lang.toUpperCase() }}
+                        </option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Words</label>
+                    <input
+                        type="number"
+                        v-model.number="dactyloStore.numberOfWords"
+                        min="5"
+                        max="80"
+                    />
+                </div>
+                <div class="control-group">
+                    <label>Category</label>
+                    <select v-model="dactyloStore.category">
+                        <template v-if="dactyloStore.language == 'en'">
+                            <option
+                                v-for="cat in dactyloStore.EnglishCategories"
+                                :key="cat"
+                                :value="cat"
+                            >
+                                {{ cat }}
+                            </option>
+                        </template>
+                        <template v-else>
+                            <option
+                                v-for="cat in dactyloStore.categories"
+                                :key="cat"
+                                :value="cat"
+                            >
+                                {{ cat }}
+                            </option>
+                        </template>
+                    </select>
+                </div>
+                <button
+                    class="apply-btn"
+                    @click="
+                        (event) => {
+                            dactyloStore.saveParameters();
+                            event.target.blur();
+                        }
+                    "
                 >
-                    {{ cat }}
-                </option>
-            </template>
-            <template v-else>
-                <option v-for="cat in dactyloStore.categories" :key="cat" :value="cat">
-                    {{ cat }}
-                </option>
-            </template>
-        </select>
+                    Apply Settings
+                </button>
+            </div>
 
-        <button
-            @click="
-                (event) => {
-                    dactyloStore.saveParameters();
-                    event.target.blur();
-                }
-            "
-        >
-            Save
-        </button>
-    </div>
-    <div class="textToType">
-        <span
-            v-for="(char, index) in dactyloStore.textToType"
-            :key="index"
-            :class="{
-                typed: index < dactyloStore.currentTextIndex,
-                current: index === dactyloStore.currentTextIndex,
-                error: dactyloStore.errors.includes(index),
-            }"
-        >
-            {{ char }}
-        </span>
+            <div class="text-area">
+                <div class="textToType">
+                    <span
+                        v-for="(char, index) in dactyloStore.textToType"
+                        :key="index"
+                        :class="{
+                            typed: index < dactyloStore.currentTextIndex,
+                            current: index === dactyloStore.currentTextIndex,
+                            error: dactyloStore.errors.includes(index),
+                        }"
+                    >
+                        {{ char }}
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -131,33 +155,64 @@ onUnmounted(() => {
 }
 
 .textToType {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1200px;
-    max-width: 90vw;
-    font-size: 40px;
-    line-height: 1.5;
-    font-family: "Courier New", monospace;
+    font-size: 2rem;
+    line-height: 1.8;
+    font-family: "Courier New", "Consolas", monospace;
     white-space: pre-wrap;
     word-wrap: break-word;
+    letter-spacing: 0.02em;
+}
+
+.textToType span {
+    color: #6e798b;
+    transition: all 0.15s ease;
+    position: relative;
 }
 
 .typed {
-    color: #4caf50;
+    color: #8b92a8 !important;
 }
 
 .typed.error {
-    color: #f44336;
+    color: #e06c75 !important;
+    text-decoration: line-through;
 }
 
 .current {
-    text-decoration: underline;
-    color: #666;
+    color: #e1e4e8 !important;
+    background: #5b8bd4;
+    border-radius: 3px;
+    animation: blink 1s ease-in-out infinite;
 }
 
-span {
-    color: #666;
+/* @keyframes blink {
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+    25%,
+    75% {
+        opacity: 0.5;
+    }
+} */
+
+/* Responsive */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    .textToType {
+        font-size: 1.5rem;
+    }
+
+    .text-area {
+        padding: 2rem 1.5rem;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
 }
 </style>
