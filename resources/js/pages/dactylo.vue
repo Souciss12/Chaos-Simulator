@@ -9,7 +9,6 @@
         <div class="accuracy">Accuracy : {{ dactyloStore.accuracy.toFixed(1) }}%</div>
         <div class="speed">Speed : {{ Math.round(dactyloStore.typeSpeed) }} cpm</div>
     </div>
-    <br />
     <div class="parameters">
         <label for="language-select">Language: </label>
         <select id="language-select" v-model="dactyloStore.language">
@@ -104,6 +103,33 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.stats {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
+.stats > div {
+    padding: 0.5rem 1rem;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.parameters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+
 .textToType {
     position: absolute;
     top: 50%;
