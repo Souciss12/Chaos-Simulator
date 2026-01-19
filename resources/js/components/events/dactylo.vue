@@ -90,7 +90,7 @@ function end() {
 
     setTimeout(() => {
         reset();
-    }, 15000);
+    }, 3000);
 }
 
 function reset() {
