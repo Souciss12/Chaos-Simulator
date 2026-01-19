@@ -13,6 +13,7 @@
 
         <Pizza />
         <Customer />
+        <Dactylo />
     </div>
 </template>
 
@@ -29,6 +30,7 @@ import SmartphoneMenu from "./events/smartphoneMenu.vue";
 import Charger from "./events/charger.vue";
 import Customer from "./events/customer.vue";
 import { popupsRandom } from "../utils/seedRandom";
+import Dactylo from "./events/dactylo.vue";
 
 const chaosStore = useChaosStore();
 

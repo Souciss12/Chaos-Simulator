@@ -73,8 +73,6 @@ export const useDactyloStore = defineStore('dactylo', () => {
                 }
             }
         }
-
-
     }
 
     function restart() {
