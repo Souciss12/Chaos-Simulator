@@ -8,6 +8,8 @@
                     Partie aléatoire
                 </button>
                 <button @click="startDactylo" class="btn-random">Random Dactylo</button>
+                <button @click="startLight" class="btn-random">Light puzzle</button>
+                <button @click="startGameOfLife" class="btn-random">Game of Life</button>
             </div>
         </div>
     </div>
@@ -50,6 +52,14 @@ function startRandomGame() {
 
 function startDactylo() {
     navigationStore.navigateTo("dactylo");
+}
+
+function startLight() {
+    navigationStore.navigateTo("light");
+}
+
+function startGameOfLife() {
+    navigationStore.navigateTo("gameOfLife");
 }
 </script>
 
