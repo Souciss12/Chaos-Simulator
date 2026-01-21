@@ -7,7 +7,7 @@ export const useGameOfLifeStore = defineStore('gameOfLife', () => {
 
     let intervalId = null;
 
-    const gridSize = ref(70);
+    const gridSize = ref(45);
     const grid = ref(Array.from({ length: gridSize.value }, () => Array.from({ length: gridSize.value }, () => false)));
 
     function clickCell(row, col) {

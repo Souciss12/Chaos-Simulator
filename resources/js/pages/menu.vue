@@ -8,7 +8,7 @@
                     Partie aléatoire
                 </button>
                 <button @click="startDactylo" class="btn-random">Random Dactylo</button>
-                <button @click="startLight" class="btn-random">Light puzzle</button>
+                <button @click="startLight" class="btn-random">Lights out Algo</button>
                 <button @click="startGameOfLife" class="btn-random">Game of Life</button>
             </div>
         </div>
