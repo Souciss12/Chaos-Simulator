@@ -28,6 +28,12 @@ php artisan key:generate
 npm install
 ```
 
+### 4. Create .sqlite file
+
+```bash
+php artisan migrate
+```
+
 ### 5. Launch server
 
 Terminal :
