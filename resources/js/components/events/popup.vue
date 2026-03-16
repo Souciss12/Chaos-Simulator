@@ -25,29 +25,30 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PopupVirus from "./popups/popupVirus.vue";
 import PopupAds from "./popups/popupAds.vue";
 import PopupUpdate from "./popups/popupUpdate.vue";
 import { useChaosStore } from "../../stores/chaosStore";
+import { Popup } from "../../types/poup";
 
 const chaosStore = useChaosStore();
 
-defineProps({
-    popup: Object,
-});
+const props = defineProps<{
+    popup: Popup;
+}>();
 
 const timer = setInterval(() => {
     chaosStore.addChaos(1, 1250, 90);
 }, 8000);
 
-function closePopup(popupId, x, y) {
+function closePopup(popupId: number, x: number, y: number): void {
     clearInterval(timer);
     chaosStore.reduceChaos(1, x, y);
     chaosStore.closePopup(popupId);
 }
 
-function openPopup(popupId, x, y) {
+function openPopup(popupId: number, x: number, y: number): void {
     clearInterval(timer);
     chaosStore.addChaos(5, x, y);
     chaosStore.closePopup(popupId);

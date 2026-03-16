@@ -73,40 +73,52 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useChaosStore } from "../../stores/chaosStore";
 import { ref, watch } from "vue";
 import { eventBus } from "../../eventBus";
-import pateImg from "../../../assets/pizza/pate.png";
-import tomateImg from "../../../assets/pizza/tomate.png";
-import fromageImg from "../../../assets/pizza/fromage.png";
-import ananasImg from "../../../assets/pizza/ananas.png";
-import jambonImg from "../../../assets/pizza/jambon.png";
-import peperonniImg from "../../../assets/pizza/peperonni.png";
-
+import { PizzaState } from "../../types/pizzaState";
 const chaosStore = useChaosStore();
-let pizzaState = ref("empty");
-let cookedPizzaType = ref("empty");
-let isPizzaCooked = ref(false);
-let isCooking = ref(false);
-let cookingTimeLeft = ref(0);
-let cookingProgress = ref(0);
-let intervalId = null;
 
-function trashPizza() {
+const pateImg: string = new URL("../../../assets/pizza/pate.png", import.meta.url).href;
+const tomateImg: string = new URL("../../../assets/pizza/tomate.png", import.meta.url)
+    .href;
+const fromageImg: string = new URL("../../../assets/pizza/fromage.png", import.meta.url)
+    .href;
+const ananasImg: string = new URL("../../../assets/pizza/ananas.png", import.meta.url)
+    .href;
+const jambonImg: string = new URL("../../../assets/pizza/jambon.png", import.meta.url)
+    .href;
+const peperonniImg: string = new URL(
+    "../../../assets/pizza/peperonni.png",
+    import.meta.url
+).href;
+
+let pizzaState = ref<PizzaState>("empty");
+let cookedPizzaType = ref<PizzaState>("empty");
+let isPizzaCooked = ref<boolean>(false);
+let isCooking = ref<boolean>(false);
+let cookingTimeLeft = ref<number>(0);
+let cookingProgress = ref<number>(0);
+let intervalId: ReturnType<typeof setInterval> | null = null;
+
+function trashPizza(): void {
     if (pizzaState.value != "empty") {
         pizzaState.value = "empty";
     }
     if (cookedPizzaType.value != "empty") {
         cookedPizzaType.value = "empty";
         isPizzaCooked.value = false;
-        clearInterval(intervalId);
+        if (intervalId !== null) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
         intervalId = null;
         isCooking.value = false;
     }
 }
 
-function cookPizza() {
+function cookPizza(): void {
     if (
         pizzaState.value == "ananas" ||
         pizzaState.value == "jambon" ||
@@ -122,18 +134,21 @@ function cookPizza() {
 
         if (intervalId) clearInterval(intervalId);
 
-        const startTime = Date.now();
-        const duration = 20000;
+        const startTime: number = Date.now();
+        const duration: number = 20000;
 
         intervalId = setInterval(() => {
-            const elapsed = Date.now() - startTime;
-            const remaining = Math.max(0, duration - elapsed);
+            const elapsed: number = Date.now() - startTime;
+            const remaining: number = Math.max(0, duration - elapsed);
 
             cookingTimeLeft.value = Math.ceil(remaining / 1000);
             cookingProgress.value = Math.min(100, (elapsed / duration) * 100);
 
             if (elapsed >= duration) {
-                clearInterval(intervalId);
+                if (intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
                 intervalId = null;
                 isCooking.value = false;
                 isPizzaCooked.value = true;
@@ -142,7 +157,7 @@ function cookPizza() {
     }
 }
 
-function addIngredient(ingredient) {
+function addIngredient(ingredient: string): void {
     if (pizzaState.value === "empty") {
         if (ingredient === "pate") {
             pizzaState.value = "pate";
@@ -178,7 +193,7 @@ function addIngredient(ingredient) {
     }
 }
 
-function resetMicrowave() {
+function resetMicrowave(): void {
     isPizzaCooked.value = false;
     cookedPizzaType.value = "empty";
 }

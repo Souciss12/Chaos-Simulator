@@ -2,7 +2,7 @@
     <component :is="currentComponent" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useNavigationStore } from "./stores/navigationStore";
 import Menu from "./pages/menu.vue";

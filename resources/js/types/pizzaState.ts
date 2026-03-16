@@ -1,0 +1,1 @@
+export type PizzaState = "empty" | "ananas" | "jambon" | "peperonni" | "fromage" | "pate" | "tomate"

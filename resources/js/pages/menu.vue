@@ -15,9 +15,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useNavigationStore } from "../stores/navigationStore";
-import { useChaosStore } from "../stores/chaosStore";
+import { useChaosStore } from "../stores/chaosStore.ts";
 import { popupsRandom } from "../utils/seedRandom";
 import { thermoRandom } from "../utils/seedRandom";
 import { calendarRandom } from "../utils/seedRandom";
@@ -26,9 +26,9 @@ import { customerRandom } from "../utils/seedRandom";
 const navigationStore = useNavigationStore();
 const chaosStore = useChaosStore();
 
-function startDailyGame() {
-    const today = new Date();
-    const seed =
+function startDailyGame(): void {
+    const today: Date = new Date();
+    const seed: number =
         today.getFullYear() * 1000 + today.getMonth() * 100 + today.getDate() * 10;
     popupsRandom.setSeed(seed + "popup");
     thermoRandom.setSeed(seed + "thermo");
@@ -39,8 +39,8 @@ function startDailyGame() {
     navigationStore.navigateTo("game");
 }
 
-function startRandomGame() {
-    const randomSeed = Math.random().toString(36).substring(2, 15);
+function startRandomGame(): void {
+    const randomSeed: string = Math.random().toString(36).substring(2, 15);
     popupsRandom.setSeed(randomSeed + "popup");
     thermoRandom.setSeed(randomSeed + "thermo");
     calendarRandom.setSeed(randomSeed + "calendar");
@@ -50,15 +50,15 @@ function startRandomGame() {
     navigationStore.navigateTo("game");
 }
 
-function startDactylo() {
+function startDactylo(): void {
     navigationStore.navigateTo("dactylo");
 }
 
-function startLight() {
+function startLight(): void {
     navigationStore.navigateTo("light");
 }
 
-function startGameOfLife() {
+function startGameOfLife(): void {
     navigationStore.navigateTo("gameOfLife");
 }
 </script>

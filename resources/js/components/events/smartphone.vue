@@ -7,16 +7,23 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
-import offSmartphoneImg from "../../../assets/off-smartphone.png";
-import onSmartphoneImg from "../../../assets/on-smartphone.png";
-
 const chaosStore = useChaosStore();
-const isMenuOpen = ref(false);
-const isChargerActivate = ref(false);
+
+const offSmartphoneImg: string = new URL(
+    "../../../assets/off-smartphone.png",
+    import.meta.url
+).href;
+const onSmartphoneImg: string = new URL(
+    "../../../assets/on-smartphone.png",
+    import.meta.url
+).href;
+
+const isMenuOpen = ref<boolean>(false);
+const isChargerActivate = ref<boolean>(false);
 
 chaosStore.phoneBattery = 20;
 
@@ -36,7 +43,7 @@ eventBus.on("charger-deactivated", () => {
     isChargerActivate.value = false;
 });
 
-function openSmartphone() {
+function openSmartphone(): void {
     eventBus.emit("smartphone-clicked");
 }
 </script>

@@ -1,0 +1,1 @@
+export type Page = 'menu' | 'game' | 'dactylo' | 'light' | 'gameOfLife';

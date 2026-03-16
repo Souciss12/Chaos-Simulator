@@ -8,10 +8,12 @@
     </div>
 </template>
 
-<script setup>
-defineProps({
-    notification: Object,
-});
+<script setup lang="ts">
+import { ChaosNotification } from '../types/chaosNotification';
+
+const props = defineProps<{
+    notification: ChaosNotification;
+}>();
 </script>
 
 <style scoped>

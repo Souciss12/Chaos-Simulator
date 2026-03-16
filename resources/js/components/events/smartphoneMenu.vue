@@ -34,17 +34,18 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onUnmounted } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
+import { CalendarEvent } from "../../types/calendarEvent";
 
 const chaosStore = useChaosStore();
-const isMenuOpen = ref(false);
-const isMessageSent = ref(false);
-let isSmartPhoneMenuOpen = ref(false);
-let isChargerActivate = ref(false);
-let chargerTimer = null;
+const isMenuOpen = ref<boolean>(false);
+const isMessageSent = ref<boolean>(false);
+let isSmartPhoneMenuOpen = ref<boolean>(false);
+let isChargerActivate = ref<boolean>(false);
+let chargerTimer: number | ReturnType<typeof setInterval> | null = null;
 
 eventBus.on("smartphone-clicked", () => {
     openMenu();
@@ -58,6 +59,7 @@ eventBus.on("charger-activated", () => {
     isChargerActivate.value = true;
     closeMenu();
     chargerTimer = setInterval(() => {
+        if (chaosStore.phoneBattery == null) return;
         if (chaosStore.phoneBattery < 100) {
             chaosStore.phoneBattery += 1;
         }
@@ -72,19 +74,17 @@ eventBus.on("charger-deactivated", () => {
     }
 });
 
-const contacts = computed(() => {
+const contacts = computed((): CalendarEvent[] => {
     return chaosStore.calendarEvents
-        .filter((event) => event[1] !== "none")
+        .filter((event) => event.name && event.name !== "none")
         .map((event) => {
-            const name = event[1];
-            const day = event[0];
-            const isBirthday =
-                chaosStore.currentDay ===
-                chaosStore.calendarEvents.findIndex((e) => e[1] === name);
+            const name: string = event.name;
+            const day: string = event.day;
+            const isBirthday: boolean = parseInt(event.day) === chaosStore.currentDay;
 
             return {
-                name: name,
-                day: day,
+                name: event.name,
+                day: event.day,
                 isBirthday: isBirthday,
                 initials: name
                     .split(" ")
@@ -96,16 +96,18 @@ const contacts = computed(() => {
         .sort((a, b) => a.name.localeCompare(b.name));
 });
 
-let batteryTimer = null;
+let batteryTimer: number | ReturnType<typeof setInterval> | null = null;
 
-function openMenu() {
+function openMenu(): void {
     stopTimer();
+    if (chaosStore.phoneBattery == null) return;
     if (chaosStore.phoneBattery > 0 && !isChargerActivate.value) {
         isMenuOpen.value = !isMenuOpen.value;
         if (isMenuOpen.value) {
             isSmartPhoneMenuOpen.value = true;
             eventBus.emit("smartphone-menu-opened");
             batteryTimer = setInterval(() => {
+                if (chaosStore.phoneBattery == null) return;
                 if (chaosStore.phoneBattery > 0) {
                     chaosStore.phoneBattery -= 1;
                     if (chaosStore.phoneBattery <= 0) {
@@ -124,21 +126,21 @@ function openMenu() {
     }
 }
 
-function closeMenu() {
+function closeMenu(): void {
     isMenuOpen.value = false;
     isSmartPhoneMenuOpen.value = false;
     eventBus.emit("smartphone-menu-closed");
     stopTimer();
 }
 
-function stopTimer() {
+function stopTimer(): void {
     if (batteryTimer) {
         clearInterval(batteryTimer);
         batteryTimer = null;
     }
 }
 
-const selectContact = (contact) => {
+const selectContact = (contact: CalendarEvent) => {
     isMenuOpen.value = false;
     isSmartPhoneMenuOpen.value = false;
     eventBus.emit("smartphone-menu-closed");

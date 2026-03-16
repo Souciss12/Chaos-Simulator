@@ -92,6 +92,7 @@
                 v-for="(sol, index) in lightStore.posibilities"
                 :key="index"
                 class="solution-item"
+
             >
                 {{
                     sol
@@ -150,12 +151,12 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useLightStore } from "../stores/lightStore";
 
 const lightStore = useLightStore();
-const showHelp = ref(false);
+const showHelp = ref<boolean>(false);
 </script>
 
 <style scoped>

@@ -1,0 +1,1 @@
+export type PopupType = 'virus' | 'ads' | 'update';

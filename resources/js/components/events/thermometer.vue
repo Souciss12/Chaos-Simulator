@@ -12,19 +12,31 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
-import normalThermometerImg from "../../../assets/normal-thermometer.png";
-import hotThermometerImg from "../../../assets/hot-thermometer.png";
-import coldThermometerImg from "../../../assets/cold-thermometer.png";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
 import { thermoRandom } from "../../utils/seedRandom";
+import { TemperatureMode } from "../../types/temperatureMode";
+import { ThermometerState } from "../../types/thermometerState";
 const chaosStore = useChaosStore();
 
-const thermometerState = ref("normal");
-const temperatureMode = ref("stable"); // stable, cooling, heating
-let chaosTimer = null;
+const normalThermometerImg: string = new URL(
+    "../../../assets/normal-thermometer.png",
+    import.meta.url
+).href;
+const hotThermometerImg: string = new URL(
+    "../../../assets/hot-thermometer.png",
+    import.meta.url
+).href;
+const coldThermometerImg: string = new URL(
+    "../../../assets/cold-thermometer.png",
+    import.meta.url
+).href;
+
+const thermometerState = ref<ThermometerState>("normal");
+const temperatureMode = ref<TemperatureMode>("stable"); // stable, cooling, heating
+let chaosTimer: number | ReturnType<typeof setInterval> | null = null;
 
 eventBus.on("temperature-cooling", () => {
     temperatureMode.value = "cooling";
@@ -40,7 +52,7 @@ eventBus.on("temperature-stabilizing", () => {
 
 updateChaosTimer();
 
-function updateChaosTimer() {
+function updateChaosTimer(): void {
     if (chaosTimer) {
         clearInterval(chaosTimer);
         chaosTimer = null;
@@ -84,16 +96,21 @@ function updateChaosTimer() {
     }
 }
 
-function startChaosTimer(isAdd, amount, interval, state) {
+function startChaosTimer(
+    isAdd: boolean,
+    amount: number,
+    interval: number,
+    state?: ThermometerState
+): void {
     if (isAdd) {
-        chaosTimer = setInterval(() => {
+        chaosTimer = setInterval((): void => {
             if (state) {
                 thermometerState.value = state;
             }
             chaosStore.addChaos(amount, 190, 300);
         }, interval);
     } else {
-        chaosTimer = setInterval(() => {
+        chaosTimer = setInterval((): void => {
             if (state) {
                 thermometerState.value = state;
             }

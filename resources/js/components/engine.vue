@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useChaosStore } from "../stores/chaosStore";
 import Popup from "./events/popup.vue";
 import Thermometer from "./events/thermometer.vue";
@@ -34,18 +34,18 @@ import Dactylo from "./events/dactylo.vue";
 
 const chaosStore = useChaosStore();
 
-chaosStore.chaosLevel = 50;
+chaosStore.chaosLevel = 100;
 
 spawnPopup();
 
-function spawnPopup() {
-    setTimeout(() => {
+function spawnPopup(): void {
+    setTimeout((): void => {
         chaosStore.spawnPopup();
         spawnPopup();
     }, rndDelay());
 }
 
-function rndDelay() {
+function rndDelay(): number {
     // return 5000;
     return popupsRandom.randomInt(20000, 90000);
 }

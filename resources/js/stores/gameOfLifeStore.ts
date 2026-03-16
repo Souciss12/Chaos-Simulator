@@ -1,34 +1,35 @@
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
+import { Grid } from '../types/grid';
 
 export const useGameOfLifeStore = defineStore('gameOfLife', () => {
-    const isStarted = ref(false);
-    const speed = ref(100);
+    const isStarted = ref<boolean>(false);
+    const speed = ref<number>(100);
 
-    let intervalId = null;
+    let intervalId: number | null = null;
 
-    const gridSize = ref(45);
-    const grid = ref(Array.from({ length: gridSize.value }, () => Array.from({ length: gridSize.value }, () => false)));
+    const gridSize = ref<number>(45);
+    const grid = ref<Grid>(Array.from({ length: gridSize.value }, () => Array.from({ length: gridSize.value }, () => false)));
 
-    function clickCell(row, col) {
+    function clickCell(row: number, col: number): void {
         if (!isStarted.value) {
             grid.value[row][col] = !grid.value[row][col];
         }
     }
 
-    function processGeneration() {
-        let newGrid = Array.from({ length: gridSize.value }, () => Array.from({ length: gridSize.value }, () => false));
+    function processGeneration(): void {
+        let newGrid: Grid = Array.from({ length: gridSize.value }, () => Array.from({ length: gridSize.value }, () => false));
 
         for (let row = 0; row < gridSize.value; row++) {
             for (let col = 0; col < gridSize.value; col++) {
-                let isLiving = grid.value[row][col] == true ? true : false;
+                let isLiving: boolean = grid.value[row][col] == true ? true : false;
 
-                let livingNeighbors = 0;
+                let livingNeighbors: number = 0;
                 for (let i = -1; i <= 1; i++) {
                     for (let j = -1; j <= 1; j++) {
                         if (i === 0 && j === 0) continue;
-                        let neighborRow = row + i;
-                        let neighborCol = col + j;
+                        let neighborRow: number = row + i;
+                        let neighborCol: number = col + j;
 
                         if (neighborRow >= 0 && neighborRow < gridSize.value && neighborCol >= 0 && neighborCol < gridSize.value) {
                             if (grid.value[neighborRow][neighborCol]) {
@@ -59,18 +60,18 @@ export const useGameOfLifeStore = defineStore('gameOfLife', () => {
         grid.value = newGrid;
     }
 
-    watch(speed, (newSpeed) => {
+    watch(speed, (_): void => {
         if (isStarted.value) {
             pause();
             start();
         }
     });
 
-    watch(gridSize, (newSize) => {
+    watch(gridSize, (_): void => {
         clear();
     });
 
-    function start() {
+    function start(): void {
         if (intervalId) return;
 
         isStarted.value = true;
@@ -80,7 +81,7 @@ export const useGameOfLifeStore = defineStore('gameOfLife', () => {
         }, speed.value);
     }
 
-    function pause() {
+    function pause(): void {
         isStarted.value = false;
 
         if (intervalId) {
@@ -89,7 +90,7 @@ export const useGameOfLifeStore = defineStore('gameOfLife', () => {
         }
     }
 
-    function clear() {
+    function clear(): void {
         isStarted.value = false;
         if (intervalId) {
             clearInterval(intervalId);

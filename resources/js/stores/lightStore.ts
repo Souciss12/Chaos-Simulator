@@ -1,30 +1,31 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { Grid } from '../types/grid';
 
 export const useLightStore = defineStore('light', () => {
-    const canClick = ref(true);
-    const isResolving = ref(false);
-    const shouldStop = ref(false);
+    const canClick = ref<boolean>(true);
+    const isResolving = ref<boolean>(false);
+    const shouldStop = ref<boolean>(false);
 
-    const moves = ref(0);
-    const isPossible = ref(true);
-    const posibilities = ref([]);
-    const currentCombination = ref('0/0');
+    const moves = ref<number>(0);
+    const isPossible = ref<boolean>(true);
+    const posibilities = ref<number[]>([]);
+    const currentCombination = ref<string>('0/0');
 
-    const rows = ref(5);
-    const cols = ref(5);
-    const fillPercent = ref(50);
+    const rows = ref<number>(5);
+    const cols = ref<number>(5);
+    const fillPercent = ref<number>(50);
 
-    const originalGrid = ref([]);
-    const grid = ref([]);
+    const originalGrid = ref<Grid>([]);
+    const grid = ref<Grid>([]);
 
-    function generateGrid() {
+    function generateGrid(): void {
         shouldStop.value = true;
-        const newGrid = [];
+        const newGrid: Grid = [];
         for (let r = 0; r < rows.value; r++) {
-            const row = [];
+            const row: boolean[] = [];
             for (let c = 0; c < cols.value; c++) {
-                const isTrue = Math.random() * 100 < fillPercent.value;
+                const isTrue: boolean = Math.random() * 100 < fillPercent.value;
                 row.push(isTrue);
             }
             newGrid.push(row);
@@ -41,7 +42,7 @@ export const useLightStore = defineStore('light', () => {
     // 3 Pour chaque ligne une après l'autre, si une case false cliquer sur la case en dessous
     // 4 vérifier si la dernière ligne est toute true, sinon recommencer avec une autre combinaison pour la première ligne
 
-    async function resolve() {
+    async function resolve(): Promise<void> {
         // Empêcher de lancer deux fois en même temps
         if (isResolving.value) return;
 
@@ -51,15 +52,15 @@ export const useLightStore = defineStore('light', () => {
         posibilities.value = [];
         isPossible.value = false;
 
-        const resetGrid = () => {
+        const resetGrid = (): void => {
             grid.value = originalGrid.value.map(row => [...row]);
             moves.value = 0;
             isPossible.value = false;
         };
 
         // 1 compter nombre posibilités premières lignes
-        const combinaison = Math.pow(2, grid.value[0].length);
-        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const combinaison: number = Math.pow(2, grid.value[0].length);
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
         for (let i = 0; i < combinaison; i++) {
             // Vérifier si on doit arrêter
@@ -102,13 +103,13 @@ export const useLightStore = defineStore('light', () => {
         canClick.value = true;
     }
 
-    function restart() {
+    function restart(): void {
         shouldStop.value = true;
         grid.value = originalGrid.value.map(row => [...row]);
         moves.value = 0;
     }
 
-    function clickCell(row, col) {
+    function clickCell(row: number, col: number): void {
         toggleCell(row, col);
         toggleCell(row - 1, col);
         toggleCell(row + 1, col);
@@ -117,7 +118,7 @@ export const useLightStore = defineStore('light', () => {
         moves.value += 1;
     }
 
-    function clickCellHand(row, col) {
+    function clickCellHand(row: number, col: number): void {
         if (!canClick.value) return;
         toggleCell(row, col);
         toggleCell(row - 1, col);
@@ -127,7 +128,7 @@ export const useLightStore = defineStore('light', () => {
         moves.value += 1;
     }
 
-    function toggleCell(row, col) {
+    function toggleCell(row: number, col: number): void {
         if (row >= 0 && row < grid.value.length && col >= 0 && col < grid.value[0].length) {
             grid.value[row][col] = !grid.value[row][col];
         }

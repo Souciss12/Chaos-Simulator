@@ -48,7 +48,7 @@
             @click="
                 (event) => {
                     dactyloStore.saveParameters();
-                    event.target.blur();
+                    (event.target as HTMLElement).blur();
                 }
             "
         >
@@ -62,7 +62,7 @@
             :class="{
                 typed: index < dactyloStore.currentTextIndex,
                 current: index === dactyloStore.currentTextIndex,
-                error: dactyloStore.errors.includes(index),
+                error: dactyloStore.errors.includes(index.toString()),
             }"
         >
             {{ char }}
@@ -70,13 +70,13 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
 import { useDactyloStore } from "../stores/dactyloStore";
 
 const dactyloStore = useDactyloStore();
 
-const handleKeyPress = (event) => {
+const handleKeyPress = (event: KeyboardEvent): void => {
     if (
         event.key == "Shift" ||
         event.key == "CapsLock" ||
@@ -92,12 +92,12 @@ const handleKeyPress = (event) => {
     dactyloStore.processKey(event.key);
 };
 
-onMounted(() => {
+onMounted((): void => {
     dactyloStore.prepareNewText();
     window.addEventListener("keydown", handleKeyPress);
 });
 
-onUnmounted(() => {
+onUnmounted((): void => {
     window.removeEventListener("keydown", handleKeyPress);
 });
 </script>

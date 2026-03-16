@@ -51,7 +51,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useGameOfLifeStore } from "../stores/gameOfLifeStore";
 
 const gameOfLifeStore = useGameOfLifeStore();

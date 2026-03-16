@@ -12,16 +12,16 @@
         </div>
     </div>
     <div v-else-if="chaosStore.isGameWin">
-        <GameWin :chaosLevel="chaosStore.chaosLevel" @restart="chaosStore.restart()" />
+        <GameWin :chaosLevel="chaosStore.chaosLevel ?? 0" @restart="chaosStore.restart()" />
     </div>
     <div v-else>
-        <GameOver :chaosLevel="chaosStore.chaosLevel" @restart="chaosStore.restart()" />
+        <GameOver :chaosLevel="chaosStore.chaosLevel ?? 0" @restart="chaosStore.restart()" />
     </div>
     <!-- <button @click="chaosStore.addChaos(100)">Loose</button>
     <button @click="chaosStore.reduceChaos(100)">Win</button> -->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useChaosStore } from "../stores/chaosStore";
 import Engine from "../components/engine.vue";
 import HUD from "../components/hud.vue";
@@ -31,7 +31,7 @@ import GameWin from "../components/gameWin.vue";
 
 const chaosStore = useChaosStore();
 
-function menu() {
+function menu(): void {
     location.reload();
 }
 </script>

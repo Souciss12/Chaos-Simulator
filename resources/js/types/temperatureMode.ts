@@ -1,0 +1,1 @@
+export type TemperatureMode = 'stable' | 'cooling' | 'heating';

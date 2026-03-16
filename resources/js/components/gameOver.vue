@@ -11,10 +11,10 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps(["chaosLevel"]);
 
-function goToMenu() {
+function goToMenu(): void {
     location.reload();
 }
 </script>

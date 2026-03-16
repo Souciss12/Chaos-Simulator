@@ -1,42 +1,43 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { WordItem } from '../types/wordItem';
 
 export const useDactyloStore = defineStore('dactylo', () => {
-    const totalStrokes = ref(0);
-    const currentStreak = ref(0);
+    const totalStrokes = ref<number>(0);
+    const currentStreak = ref<number>(0);
 
-    const currentStrokes = ref(0);
-    const errors = ref([]);
-    const accuracy = ref(0);
+    const currentStrokes = ref<number>(0);
+    const errors = ref<string[]>([]);
+    const accuracy = ref<number>(0);
 
-    const startTime = ref(null);
-    const endTime = ref(null);
-    const passedTime = ref(0);
-    const typeSpeed = ref(0);
+    const startTime = ref<Date | null>(null);
+    const endTime = ref<Date | null>(null);
+    const passedTime = ref<number>(0);
+    const typeSpeed = ref<number>(0);
 
-    const currentTextIndex = ref(0);
-    const isStarted = ref(false);
-    const textToType = ref("");
+    const currentTextIndex = ref<number>(0);
+    const isStarted = ref<boolean>(false);
+    const textToType = ref<string>("");
 
-    const language = ref("en");
-    const languages = ref(["en", "fr", "es", "de", "it"]);
-    const numberOfWords = ref(10);
-    const category = ref("All");
-    const categories = ref(["All", "Countries", "Sports", "Animals", "Birds"]);
-    const EnglishCategories = ref(["All", "Wordle", "Brainrot", "Countries", "Capitals_Of_Countries", "Sports", "Animals", "Birds", "Softwares", "Programming_Languages", "Games", "Companies"]);
-    const capitalLetters = ref(false);
+    const language = ref<string>("en");
+    const languages = ref<string[]>(["en", "fr", "es", "de", "it"]);
+    const numberOfWords = ref<number>(10);
+    const category = ref<string>("All");
+    const categories = ref<string[]>(["All", "Countries", "Sports", "Animals", "Birds"]);
+    const EnglishCategories = ref<string[]>(["All", "Wordle", "Brainrot", "Countries", "Capitals_Of_Countries", "Sports", "Animals", "Birds", "Softwares", "Programming_Languages", "Games", "Companies"]);
+    const capitalLetters = ref<boolean>(false);
 
-    async function prepareNewText() {
+    async function prepareNewText(): Promise<void> {
         try {
-            var url = '';
+            var url: string = '';
             if (category.value === "All") {
                 url = 'https://random-words-api.kushcreates.com/api?language=' + language.value + '&words=' + numberOfWords.value;
             } else {
                 url = 'https://random-words-api.kushcreates.com/api?language=' + language.value + '&words=' + numberOfWords.value + '&category=' + category.value;
             }
 
-            const response = await fetch(url);
-            const data = await response.json();
+            const response: Response = await fetch(url);
+            const data: WordItem[] = await response.json();
 
             textToType.value = data.map(item => item.word).join(' ');
         } catch (error) {
@@ -44,12 +45,12 @@ export const useDactyloStore = defineStore('dactylo', () => {
         }
     }
 
-    function saveParameters() {
+    function saveParameters(): void {
         prepareNewText();
         restart();
     }
 
-    function processKey(key) {
+    function processKey(key: string): void {
         if (!isStarted.value)
             start();
         isStarted.value = true;
@@ -66,8 +67,8 @@ export const useDactyloStore = defineStore('dactylo', () => {
                     }
                     return;
                 } else {
-                    if (!errors.value.includes(currentTextIndex.value) && key !== "Space")
-                        errors.value.push(currentTextIndex.value);
+                    if (!errors.value.includes(currentTextIndex.value.toString()) && key !== "Space")
+                        errors.value.push(currentTextIndex.value.toString());
                     currentStreak.value = 0;
                     return;
                 }
@@ -75,12 +76,12 @@ export const useDactyloStore = defineStore('dactylo', () => {
         }
     }
 
-    function restart() {
+    function restart(): void {
         isStarted.value = false;
         currentTextIndex.value = 0;
     }
 
-    function start() {
+    function start(): void {
         isStarted.value = true;
         currentStreak.value = 0;
         currentStrokes.value = 0;
@@ -89,14 +90,15 @@ export const useDactyloStore = defineStore('dactylo', () => {
         endTime.value = null;
     }
 
-    function end() {
+    function end(): void {
         prepareNewText();
 
         isStarted.value = false;
         currentTextIndex.value = 0;
 
         endTime.value = new Date();
-        passedTime.value = (endTime.value - startTime.value) / 1000;
+        if (startTime.value == null) return;
+        passedTime.value = (endTime.value.getTime() - startTime.value.getTime()) / 1000;
         typeSpeed.value = (currentStrokes.value / passedTime.value) * 60;
 
         accuracy.value = ((currentStrokes.value - errors.value.length) / currentStrokes.value) * 100;

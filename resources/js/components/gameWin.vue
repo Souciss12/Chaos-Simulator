@@ -11,10 +11,12 @@
     </div>
 </template>
 
-<script setup>
-defineProps(["chaosLevel"]);
+<script setup lang="ts">
+const props = defineProps<{
+    chaosLevel: number;
+}>();
 
-function goToMenu() {
+function goToMenu(): void {
     location.reload();
 }
 </script>

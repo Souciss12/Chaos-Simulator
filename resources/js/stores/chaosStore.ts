@@ -1,58 +1,61 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { popupsRandom } from '../utils/seedRandom';
+import { Popup } from '../types/poup';
+import { CalendarEvent } from '../types/calendarEvent';
+import { ChaosNotification } from '../types/chaosNotification';
+import { PopupType } from '../types/popupType';
 
 export const useChaosStore = defineStore('chaos', () => {
-    const chaosLevel = ref(null);
-    const isGameOver = ref(false);
-    const isGameWin = ref(false);
+    const chaosLevel = ref<number | null>(null);
+    const isGameOver = ref<boolean>(false);
+    const isGameWin = ref<boolean>(false);
 
-    const popups = ref([]);
-    const nextPopupId = ref(1);
+    const popups = ref<Popup[]>([]);
+    const nextPopupId = ref<number>(1);
 
-    const calendarEvents = ref(null);
-    const currentDay = ref(null);
-    const phoneBattery = ref(null);
+    const calendarEvents = ref<CalendarEvent[]>([]);
+    const currentDay = ref<number | null>(null);
+    const phoneBattery = ref<number | null>(null);
 
-    const chaosNotifications = ref([]);
-    let nextNotificationId = 1;
+    const chaosNotifications = ref<ChaosNotification[]>([]);
+    let nextNotificationId: number = 1;
 
-    function spawnPopup() {
+    function spawnPopup(): void {
         if (popups.value.length < 3) {
-            const rnd = popupsRandom.random();
-            if (rnd < 0.33) {
-                popups.value.push({
-                    id: nextPopupId.value++,
-                    type: 'virus',
-                    time: 3000,
-                    x: popupsRandom.randomFloat(0, 80),
-                    y: popupsRandom.randomFloat(0, 60),
-                });
+            const rnd: number = popupsRandom.random();
+            let type: PopupType = 'virus';
+            let x: number = 80;
+            let y: number = 60;
+
+            if (rnd <= 0.33) {
+                type = 'virus';
+                x = 80; y = 60;
             } else if (rnd <= 0.66) {
-                popups.value.push({
-                    id: nextPopupId.value++,
-                    type: 'ads',
-                    time: 3000,
-                    x: popupsRandom.randomFloat(0, 70),
-                    y: popupsRandom.randomFloat(0, 65),
-                });
+                type = 'ads';
+                x = 70; y = 65;
             } else {
-                popups.value.push({
-                    id: nextPopupId.value++,
-                    type: 'update',
-                    time: 3000,
-                    x: popupsRandom.randomFloat(0, 75),
-                    y: popupsRandom.randomFloat(0, 65),
-                });
+                type = 'update';
+                x = 75; y = 65;
             }
+
+            popups.value.push({
+                id: nextPopupId.value++,
+                type: type,
+                time: 3000,
+                x: popupsRandom.randomFloat(0, x),
+                y: popupsRandom.randomFloat(0, y),
+            });
         }
     }
 
-    function closePopup(id) {
+    function closePopup(id: number): void {
         popups.value = popups.value.filter(popup => popup.id !== id);
     }
 
-    function addChaos(amount, mouseX, mouseY) {
+    function addChaos(amount: number, mouseX?: number, mouseY?: number): void {
+        if (chaosLevel.value == null) return;
+
         if (chaosLevel.value < 100) {
             chaosLevel.value += amount;
         }
@@ -66,7 +69,9 @@ export const useChaosStore = defineStore('chaos', () => {
         }
     }
 
-    function reduceChaos(amount, mouseX, mouseY) {
+    function reduceChaos(amount: number, mouseX?: number, mouseY?: number): void {
+        if (chaosLevel.value == null) return;
+
         if (chaosLevel.value > 0) {
             chaosLevel.value -= amount;
         }
@@ -77,8 +82,8 @@ export const useChaosStore = defineStore('chaos', () => {
         checkWin();
     }
 
-    function addChaosNotification(amount, x, y) {
-        const notification = {
+    function addChaosNotification(amount: number, x: number, y: number): void {
+        const notification: ChaosNotification = {
             id: nextNotificationId++,
             amount: amount,
             x: x,
@@ -92,19 +97,21 @@ export const useChaosStore = defineStore('chaos', () => {
         }, 1000);
     }
 
-    function checkGameOver() {
+    function checkGameOver(): void {
+        if (chaosLevel.value == null) return;
         if (chaosLevel.value >= 100) {
             isGameOver.value = true;
         }
     }
 
-    function checkWin() {
+    function checkWin(): void {
+        if (chaosLevel.value == null) return;
         if (chaosLevel.value <= 0) {
             isGameWin.value = true;
         }
     }
 
-    function restart() {
+    function restart(): void {
         chaosLevel.value = 25;
         isGameOver.value = false;
         isGameWin.value = false;
