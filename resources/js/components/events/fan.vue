@@ -8,17 +8,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { eventBus } from "../../eventBus";
-const isFanOn = ref(false);
+const isFanOn = ref<boolean>(false);
 
-eventBus.on("desactivate-fan", () => {
+eventBus.on("desactivate-fan", (): void => {
     isFanOn.value = false;
     eventBus.emit("temperature-stabilizing");
 });
 
-function activateFan() {
+function activateFan(): void {
     if (isFanOn.value) {
         isFanOn.value = false;
         eventBus.emit("desactivate-fan");

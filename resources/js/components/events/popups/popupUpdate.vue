@@ -28,15 +28,18 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps(["popup"]);
+<script setup lang="ts">
+import { Popup } from "../../../types/poup";
+const props = defineProps<{
+    popup: Popup;
+}>();
 const emit = defineEmits(["close-popup", "open-popup"]);
 
-function openPopup(event) {
+function openPopup(event: PointerEvent): void {
     emit("open-popup", props.popup.id, event.clientX, event.clientY);
 }
 
-function closePopup(event) {
+function closePopup(event: PointerEvent): void {
     emit("close-popup", props.popup.id, event.clientX, event.clientY);
 }
 </script>

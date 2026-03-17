@@ -8,15 +8,16 @@
     <!-- <button @click="changeCurrentDay()" class="ms-3">Change</button> -->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
 import { eventBus } from "../../eventBus";
 import { calendarRandom } from "../../utils/seedRandom";
+import { CalendarEvent } from "../../types/calendarEvent";
 
 const chaosStore = useChaosStore();
-let isCalendarOpen = ref(false);
-const isMessageSent = ref(false);
+let isCalendarOpen = ref<boolean>(false);
+const isMessageSent = ref<boolean>(false);
 
 chaosStore.calendarEvents = [
     ["01", "none"],
@@ -31,34 +32,43 @@ chaosStore.calendarEvents = [
     ["24", "none"],
     ["25", "none"],
     ["30", "Nathan"],
-];
+].map(([day, name]) => ({
+    day,
+    name,
+    isBirthday: false,
+}));
 chaosStore.currentDay = calendarRandom.randomInt(0, 10);
 
-const currentCalendarImage = computed(() => {
-    return new URL(
-        `../../../assets/calendar/${
-            chaosStore.calendarEvents[chaosStore.currentDay][0]
-        }-calendar.jpg`,
-        import.meta.url
-    ).href;
+const currentCalendarImage = computed((): string => {
+    const dayIndex: number | null = chaosStore.currentDay;
+
+    if (dayIndex === null || dayIndex === undefined) {
+        return "";
+    }
+
+    const event: CalendarEvent = chaosStore.calendarEvents[dayIndex];
+    return new URL(`../../../assets/calendar/${event.day}-calendar.jpg`, import.meta.url)
+        .href;
 });
 
-eventBus.on("message-sent-success", () => {
+eventBus.on("message-sent-success", (): void => {
     isMessageSent.value = true;
 });
 
-setInterval(() => {
+setInterval((): void => {
+    if (chaosStore.currentDay == null) return;
     if (!isMessageSent.value && [1, 3, 6, 7, 8, 11].includes(chaosStore.currentDay)) {
         chaosStore.addChaos(5, 200, 150);
     }
     changeCurrentDay();
 }, calendarRandom.randomInt(30000, 60000));
 
-function openCalendar() {
+function openCalendar(): void {
     isCalendarOpen.value = !isCalendarOpen.value;
 }
 
-function changeCurrentDay() {
+function changeCurrentDay(): void {
+    if (chaosStore.currentDay == null) return;
     if (chaosStore.currentDay < chaosStore.calendarEvents.length - 1)
         chaosStore.currentDay += 1;
     else chaosStore.currentDay = 0;

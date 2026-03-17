@@ -7,7 +7,7 @@
                 :class="{
                     typed: index < currentTextIndex,
                     current: index === currentTextIndex,
-                    error: errors.includes(index),
+                    error: errors.includes(index.toString()),
                 }"
             >
                 {{ char }}
@@ -16,19 +16,20 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import { useChaosStore } from "../../stores/chaosStore";
+import { WordItem } from "../../types/wordItem";
 
 const chaosStore = useChaosStore();
-const isActivated = ref(true);
-const numberOfWords = ref(6);
-const textToType = ref("");
-const currentTextIndex = ref(0);
-const currentStrokes = ref(0);
-const errors = ref([]);
+const isActivated = ref<boolean>(true);
+const numberOfWords = ref<number>(6);
+const textToType = ref<string>("");
+const currentTextIndex = ref<number>(0);
+const currentStrokes = ref<number>(0);
+const errors = ref<string[]>([]);
 
-const handleKeyPress = (event) => {
+const handleKeyPress = (event: KeyboardEvent): void => {
     if (!isActivated) return;
 
     if (
@@ -46,15 +47,15 @@ const handleKeyPress = (event) => {
     processKey(event.key);
 };
 
-async function prepareText() {
+async function prepareText(): Promise<void> {
     try {
-        var url = "";
+        var url: string = "";
         url =
             "https://random-words-api.kushcreates.com/api?language=en&words=" +
             numberOfWords.value;
 
-        const response = await fetch(url);
-        const data = await response.json();
+        const response: Response = await fetch(url);
+        const data: WordItem[] = await response.json();
 
         textToType.value = data.map((item) => item.word).join(" ");
     } catch (error) {
@@ -62,7 +63,7 @@ async function prepareText() {
     }
 }
 
-function processKey(key) {
+function processKey(key: string): void {
     for (let i = 0; i < textToType.value.length; i++) {
         if (i == currentTextIndex.value) {
             if (key === textToType.value[i]) {
@@ -74,8 +75,11 @@ function processKey(key) {
                 }
                 return;
             } else {
-                if (!errors.value.includes(currentTextIndex.value) && key !== "Space") {
-                    errors.value.push(currentTextIndex.value);
+                if (
+                    !errors.value.includes(currentTextIndex.value.toString()) &&
+                    key !== "Space"
+                ) {
+                    errors.value.push(currentTextIndex.value.toString());
                     chaosStore.addChaos(1, 1540, 185);
                 }
                 return;
@@ -84,7 +88,7 @@ function processKey(key) {
     }
 }
 
-function end() {
+function end(): void {
     isActivated.value = false;
     chaosStore.reduceChaos(3, 1540, 185);
 
@@ -93,7 +97,7 @@ function end() {
     }, 3000);
 }
 
-function reset() {
+function reset(): void {
     currentTextIndex.value = 0;
     currentStrokes.value = 0;
     errors.value = [];
@@ -101,13 +105,13 @@ function reset() {
     isActivated.value = true;
 }
 
-onMounted(() => {
+onMounted((): void => {
     prepareText();
     reset();
     window.addEventListener("keydown", handleKeyPress);
 });
 
-onUnmounted(() => {
+onUnmounted((): void => {
     window.removeEventListener("keydown", handleKeyPress);
 });
 </script>

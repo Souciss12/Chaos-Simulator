@@ -34,7 +34,7 @@ import Dactylo from "./events/dactylo.vue";
 
 const chaosStore = useChaosStore();
 
-chaosStore.chaosLevel = 100;
+chaosStore.chaosLevel = 50;
 
 spawnPopup();
 
@@ -46,7 +46,6 @@ function spawnPopup(): void {
 }
 
 function rndDelay(): number {
-    // return 5000;
     return popupsRandom.randomInt(20000, 90000);
 }
 </script>

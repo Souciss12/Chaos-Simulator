@@ -25,44 +25,51 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import { eventBus } from "../../eventBus";
 import { customerRandom } from "../../utils/seedRandom";
-
-import fromageImg from "../../../assets/pizza/fromage.png";
-import ananasImg from "../../../assets/pizza/ananas.png";
-import jambonImg from "../../../assets/pizza/jambon.png";
-import peperonniImg from "../../../assets/pizza/peperonni.png";
 import { useChaosStore } from "../../stores/chaosStore";
-
+import { PizzaState } from "../../types/pizzaState";
+import { Pizza } from "../../types/pizza";
 const chaosStore = useChaosStore();
 
-const isHiden = ref(true);
-const pizzaType = ref("emtpy");
-const cookedPizzaType = ref("empty");
-const isPizzaCooked = ref(false);
-let customerTimer = null;
+const fromageImg: string = new URL("../../../assets/pizza/fromage.png", import.meta.url)
+    .href;
+const ananasImg: string = new URL("../../../assets/pizza/ananas.png", import.meta.url)
+    .href;
+const jambonImg: string = new URL("../../../assets/pizza/jambon.png", import.meta.url)
+    .href;
+const peperonniImg: string = new URL(
+    "../../../assets/pizza/peperonni.png",
+    import.meta.url
+).href;
+
+const isHiden = ref<boolean>(true);
+const pizzaType = ref<PizzaState>("empty");
+const cookedPizzaType = ref<PizzaState>("empty");
+const isPizzaCooked = ref<boolean>(false);
+let customerTimer: number | ReturnType<typeof setInterval> | null = null;
 
 setTimeout(() => {
     spawnCustomer();
 }, customerRandom.randomInt(5000, 10000));
 
-const handlePizzaStateChange = (data) => {
+const handlePizzaStateChange = (data: Pizza): void => {
     cookedPizzaType.value = data.cookedPizzaType;
     isPizzaCooked.value = data.isPizzaCooked;
 };
 
-onMounted(() => {
-    eventBus.on("pizza-state-changed", handlePizzaStateChange);
+onMounted((): void => {
+    eventBus.on("pizza-state-changed", handlePizzaStateChange as any);
 });
 
-onUnmounted(() => {
-    eventBus.off("pizza-state-changed", handlePizzaStateChange);
+onUnmounted((): void => {
+    eventBus.off("pizza-state-changed", handlePizzaStateChange as any);
     if (customerTimer) clearInterval(customerTimer);
 });
 
-function givePizza() {
+function givePizza(): void {
     if (!isHiden.value && isPizzaCooked.value) {
         if (pizzaType.value === cookedPizzaType.value) {
             isHiden.value = true;
@@ -71,7 +78,7 @@ function givePizza() {
         }
     }
 }
-function spawnCustomer() {
+function spawnCustomer(): void {
     isHiden.value = false;
     const rnd = customerRandom.randomInt(1, 4);
 

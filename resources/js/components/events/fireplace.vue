@@ -7,19 +7,25 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-import fireplaceOnImg from "../../../assets/on-fireplace.png";
-import fireplaceOffImg from "../../../assets/off-fireplace.png";
 import { eventBus } from "../../eventBus";
-const isFireplaceOn = ref(false);
+const fireplaceOnImg: string = new URL(
+    "../../../assets/on-fireplace.png",
+    import.meta.url
+).href;
+const fireplaceOffImg: string = new URL(
+    "../../../assets/off-fireplace.png",
+    import.meta.url
+).href;
+const isFireplaceOn = ref<boolean>(false);
 
-eventBus.on("desactivate-fireplace", () => {
+eventBus.on("desactivate-fireplace", (): void => {
     isFireplaceOn.value = false;
     eventBus.emit("temperature-stabilizing");
 });
 
-function activateFireplace() {
+function activateFireplace(): void {
     if (isFireplaceOn.value) {
         isFireplaceOn.value = false;
         eventBus.emit("desactivate-fireplace");

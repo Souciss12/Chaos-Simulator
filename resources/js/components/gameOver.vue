@@ -12,7 +12,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps(["chaosLevel"]);
+const props = defineProps<{
+    chaosLevel: number;
+}>();
 
 function goToMenu(): void {
     location.reload();

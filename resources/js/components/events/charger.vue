@@ -8,15 +8,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { eventBus } from "../../eventBus";
-import offChargerImg from "../../../assets/off-charger.png";
-import onChargerImg from "../../../assets/on-charger.png";
 
-const isChargerActivate = ref(false);
+const isChargerActivate = ref<boolean>(false);
+const offChargerImg: string = new URL("../../../assets/off-charger.png", import.meta.url)
+    .href;
+const onChargerImg: string = new URL("../../../assets/on-charger.png", import.meta.url)
+    .href;
 
-function toggleCharger() {
+function toggleCharger(): void {
     isChargerActivate.value = !isChargerActivate.value;
 
     if (isChargerActivate.value) {
