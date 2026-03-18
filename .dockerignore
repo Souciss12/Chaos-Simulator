@@ -1,0 +1,28 @@
+# composer & node
+node_modules
+vendor
+.nyc_output
+
+# docker & git
+docker-compose.yml
+Dockerfile
+.git
+.gitignore
+.gitattributes
+README.md
+
+# env and logs
+.env
+.env.example
+*.log
+.DS_Store
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+.phpunit.result.cache
+
+# tests & coverage
+tests
+coverage

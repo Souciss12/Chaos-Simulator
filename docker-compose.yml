@@ -1,0 +1,9 @@
+services:
+  chaos-simulator:
+    build: .
+    container_name: chaos-simulator
+    ports:
+      - "80:80"
+    # volumes:
+    #   - ./database:/var/www/html/database
+    restart: unless-stopped
