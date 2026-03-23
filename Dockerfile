@@ -1,3 +1,4 @@
+# Vite
 FROM node:20-alpine AS build-assets
 WORKDIR /app
 COPY package*.json ./
@@ -8,10 +9,9 @@ RUN npm run build
 FROM php:8.2-apache
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Configuration files
+# Config apache pour Laravel
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
-# Project files
 COPY . /var/www/html
 WORKDIR /var/www/html
 COPY --from=build-assets /app/public/build ./public/build
@@ -21,7 +21,6 @@ RUN chown -R www-data:www-data /var/www/html \
 # Enable .htaccess
 RUN a2enmod rewrite
 
-# Install dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
@@ -33,4 +32,4 @@ RUN apt-get update && apt-get install -y \
 
 EXPOSE 80
 
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+ENTRYPOINT [ "./docker-setup.sh" ]

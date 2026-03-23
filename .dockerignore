@@ -1,7 +1,8 @@
 # composer & node
 node_modules
 vendor
-.nyc_output
+.npm
+.yarn
 
 # docker & git
 docker-compose.yml
@@ -13,16 +14,31 @@ README.md
 
 # env and logs
 .env
+.env.*
+!.env.prod
 .env.example
-*.log
-.DS_Store
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 bootstrap/cache/*
-.phpunit.result.cache
+*.log
 
-# tests & coverage
+# tests & tools
 tests
 coverage
+.nyc_output
+.phpunit.result.cache
+
+# build
+public/build
+public/hot
+
+#vscode
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj

@@ -1,9 +1,9 @@
 services:
-  chaos-simulator:
-    build: .
+  app:
+    image: a12c4g/chaos-simulator-alpine:latest
     container_name: chaos-simulator
     ports:
       - "80:80"
     # volumes:
-    #   - ./database:/var/www/html/database
+    #   - chemin-vers-le-.sqlite:/var/www/html/database
     restart: unless-stopped
